@@ -83,7 +83,7 @@ for brayen in range(10000):
     g1 = random.choice(['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19'])
     g2 = random.choice(['OPM1','TP1A','RP1A','PPR1','PKQ1','QP1A','SP1A','RKQ1','QKQ1'])
     g3 = random.choice(['SM-P585Y','SM-G935S','SM-A405FN','SM-G781B','SM-J260F','SM-A515F','SM-N950U','SM-A107M','SM-A307FN'])
-    u1 = f"Mozilla/5.0 (Linux; Android 13; SM-S911B Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/113.0.5672.162 Mobile Safari/537.36"
+    u1 = f"Mozilla/5.0 (Linux; Android 11; SM-A505FN Build/RP1A.200720.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/114.0.5735.131 Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/419.0.0.37.71"
     u2 = f"Mozilla/5.0 (iPhone; CPU iPhone OS {str(rr(11,16))}_{str(rr(4,9))}_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Version/{str(rr(4,19))}.{str(rr(1,9))} Safari/605.1.15"
     UaMainn = random.choice([u1, u2])
     ugen.append(UaMainn)
