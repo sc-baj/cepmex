@@ -151,8 +151,8 @@ for t in range(10000):
 									"XiaoMi/MiuiBrowser/13.28.0-gn",
 									"XiaoMi/MiuiBrowser/12.22.0.3-gn"
 									])
-	kondom1=f'Dalvik/2.1.0 (Linux; U; Android {a}; {b}; {c} Build/{d}.{f}.{e}; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{g}.0.{h}.{i} Mobile Safari/537.36 {j}'
-	kondom2=f'Dalvik/2.1.0 (Linux; U; Android {a}; {b}; {c}) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{g}.0.{h}.{i} Mobile Safari/537.36 {j}'
+	kondom1=f'Dalvik/2.1.0 (Linux; Android {a}; {b}; {c} Build/{d}.{f}.{e}; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{g}.0.{h}.{i} Mobile Safari/537.36 {j}'
+	kondom2=f'Dalvik/2.1.0 (Linux; Android {a}; {b}; {c}) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{g}.0.{h}.{i} Mobile Safari/537.36 {j}'
 	uaku2 = random.choice([kondom1,kondom2])
 	ugen.append(uaku2)
 #------------[ INDICATION ]---------------#
